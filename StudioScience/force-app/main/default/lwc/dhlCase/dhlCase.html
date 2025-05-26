@@ -1,0 +1,162 @@
+<template>
+    <div class="slds-p-around_medium lgc-bg">
+        <template if:false={displayList}>
+        <div class="slds-path slds-m-bottom_medium">
+                            <div class="slds-grid slds-path__track">
+                              <div class="slds-grid slds-path__scroller-container">
+                                <div class="slds-path__scroller">
+                                  <div class="slds-path__scroller_inner">
+                                    <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+                                      <li class="slds-path__item slds-is-active" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" id="path-11" role="option" tabindex="-1">
+                                          <span class="slds-path__stage">
+                                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                            </svg>
+                                            <span class="slds-assistive-text"></span>
+                                          </span>
+                                          <span class="slds-path__title">Select Type</span>
+                                        </a>
+                                      </li>
+                                      <li class="slds-path__item slds-is-active" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" id="path-12" role="option" tabindex="-1">
+                                          <span class="slds-path__stage">
+                                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                            </svg>
+                                          </span>
+                                          <span class="slds-path__title">Customer Information</span>
+                                        </a>
+                                      </li>
+                                      <li class="slds-path__item slds-is-current" role="presentation">
+                                        <a aria-selected="true" class="slds-path__link" id="path-13" role="option" tabindex="0">
+                                          <span class="slds-path__stage">
+                                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                            </svg>
+                                          </span>
+                                          <span class="slds-path__title">Details</span>
+                                        </a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+        </template>
+        <template if:true={isLoaded}>
+            <lightning-tile title="Case Detail" type="media" class="list_view_container tileSpace">
+                <div class="slds-list_horizontal slds-wrap">
+                    <div class="slds-item_label TypeClass">
+                        <lightning-icon icon-name="standard:case" size="medium" alternative-text="Case" title="Case"></lightning-icon>
+                        <span class="slds-text-body_large slds-item_detail caseHeading">Case Number: {caseRecordData.CaseNumber} ({caseRecordData.AdditionalInformation__c})</span>
+                    </div>    
+                </div>
+            </lightning-tile>
+            <lightning-card >
+                <div style="margin-left: 6%" if:true={error}>
+                    <lightning-badge label={error} style="color: red;"></lightning-badge>
+                </div>
+                <lightning-accordion allow-multiple-sections-open class="example-accordion slds-gutters"
+                  active-section-name={activeSections}>
+					<lightning-accordion-section name="Customer Details" label="Customer Details" class = "accordionClass">
+					<div class="slds-m-around--xx-large">
+							<div class="container-fluid slds-grid slds-wrap">
+								<div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace">
+									<lightning-input label="First Name" disabled="true" name="firstName" required="required" type="text" value={caseRecordData.First_name__c} onchange={handleNameChange}></lightning-input>
+                                </div>
+                                <div class="slds-size_5-of-12 slds-max-small-size_1-of-1">
+									<lightning-input label="Last Name" disabled="true" name="last name" required="required" type="text" value={caseRecordData.Last_name__c} onchange={handleNameChange}></lightning-input>
+                                </div>
+                                <div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace">
+									<lightning-input label="Street" disabled="true" name="street" type="text" value={caseRecordData.Consumer_Street__c} onchange={handleNameChange}></lightning-input>
+                                </div>
+                                <div class="slds-size_5-of-12 slds-max-small-size_1-of-1">
+									<lightning-input label="City" disabled="true" name="city" type="text" value={caseRecordData.Consumer_City__c} onchange={handleNameChange}></lightning-input>
+                                </div>
+                                <div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace">
+									<lightning-input label="State" disabled="true" name="state" type="text" value={caseRecordData.Consumer_State__c} onchange={handleNameChange}></lightning-input>
+                                </div>
+                                <div class="slds-size_5-of-12 slds-max-small-size_1-of-1">
+									<lightning-input label="Postal Code" disabled="true" name="postal code" type="text" value={caseRecordData.Consumer_Postal_Code__c} onchange={handleNameChange}></lightning-input>
+                                </div>
+                                <div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace">
+									<lightning-input label="Country" disabled="true" name="Country" type="text" value={caseRecordData.Consumer_Country__c} onchange={handleNameChange}></lightning-input>
+                                </div>
+                                <div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace">
+									<lightning-input label="Email" disabled="true" name="Email" type="text" value={caseRecordData.Email_Address__c} onchange={handleNameChange}></lightning-input>
+                                </div>
+                                <div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace">
+									<lightning-input label="Phone Number" disabled="true" name="Phone" type="text" value={caseRecordData.Customer_Phone_Number__c} onchange={handleNameChange}></lightning-input>
+                                </div>
+                                <div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace">
+									<lightning-input label="Program Subscription" disabled="true" name="Program subscription" type="text" value={caseRecordData.Program_Subscription__c} onchange={handleNameChange}></lightning-input>
+                                </div>
+							</div>
+						</div>
+					
+					</lightning-accordion-section>
+					<lightning-accordion-section name="Order Details" label="Order Details" class ="accordionClass">
+                        <template if:true={spinnerStatus}>
+                            <div class="slds-is-relative">
+                                <section  class="slds-modal slds-fade-in-open">                
+                                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>                
+                                </section>
+                            </div>
+                        </template>  
+                        <div style="margin-left: 6%">
+                            <c-custom-toast auto-close-time="8000"></c-custom-toast>
+                        </div>
+                        <lightning-record-edit-form density = "Comfy" record-id={recordId} object-api-name="Case" onsuccess={handleSuccess} onerror={handleError} onsubmit ={handleSubmit}  mode="edit">  
+                        <div class="slds-m-around--xx-large">
+                            <div class="container-fluid slds-grid slds-wrap">
+                            <template if:true={isDisplay}>
+                                <div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace">
+                                    <label for="fieldid">UPS Tracking Number</label>
+                                    <lightning-input-field disabled = "{disablleOrderFields}" id="fieldidUPSTracking" variant="label-hidden" field-name = 'UPS_Tracking_Number__c'></lightning-input-field>
+                                </div>
+                                <div class="slds-size_5-of-12 slds-max-small-size_1-of-1">
+                                    <label for="fieldid">UPS Reason For Return</label>
+                                    <lightning-input-field disabled = "{disablleOrderFields}" id="fieldidUPSReason" variant="label-hidden" field-name = 'UPS_Reason_For_Return__c'></lightning-input-field>
+                                </div>
+                            </template>
+                                <div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace">
+                                    <label for="fieldid">Order ID</label>
+                                    <lightning-input-field disabled = "{disablleOrderFields}" id="fieldidOrderID" variant="label-hidden" field-name='OrderID__c'></lightning-input-field>
+                                </div>
+                                <div class="slds-size_5-of-12 slds-max-small-size_1-of-1">
+                                    <label for="fieldid">Status</label>
+                                    <lightning-input-field disabled = "{disablleOrderFields}" id="fieldidDHLStatus" variant="label-hidden" field-name = 'DHL_Status__c'></lightning-input-field>
+                                </div>
+                            </div>
+                        </div>
+                        <template if:true={showButtons}>
+                        <div class="slds-align_absolute-center">
+                            <template if:true={displayList}>
+                                <lightning-button label="Back" variant="brand-outline" title="Back" onclick={handleRedirectToList} class="slds-m-left_x-small">
+                                </lightning-button>
+                            </template>
+                            <template if:false={displayList}>
+                                <lightning-button label="Back" variant="brand-outline" title="Back" onclick={handleRedirectToCreate} class="slds-m-left_x-small">
+                                </lightning-button>
+                            </template>
+                            <template if:true={isEditable}>
+                            <lightning-button variant="brand" label="Edit" title="Edit" onclick={handleEdit} class="slds-m-left_x-small">
+                            </lightning-button>
+                            </template>
+                            
+                        </div>
+                    </template>
+                    <template if:false={showButtons}>
+                        <div class="slds-align_absolute-center">
+                            <lightning-button label="Cancel" variant="brand-outline" title="Cancel" onclick={handleCancel} class="slds-m-left_x-small">
+                            </lightning-button>
+                            <lightning-button type="submit" variant="brand" label="Save" title="Save" class="slds-m-left_x-small">
+                            </lightning-button>
+                        </div>
+                    </template>
+                        </lightning-record-edit-form>
+					</lightning-accordion-section>
+				</lightning-accordion>
+            </lightning-card>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,11 @@
+<template>
+    <div class="slds-scrollable_x">
+        <lightning-pill-container items={items} onitemremove={handleItemRemove}>
+        </lightning-pill-container>
+        <p if:true={flagForShow}>
+            <lightning-icon icon-name={iconName} size="xx-small"></lightning-icon>
+            <a><lightning-formatted-text data-id='myFormaedText' value="Show More" onclick={handleShow}></lightning-formatted-text></a><br/>
+            <lightning-pill-container if:true={showMorePhills} items={itemsInMore} onitemremove={handleItemRemoveExpand}></lightning-pill-container>
+        </p>
+    </div>
+</template>

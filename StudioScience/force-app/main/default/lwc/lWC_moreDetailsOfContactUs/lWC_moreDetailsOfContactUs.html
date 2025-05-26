@@ -1,0 +1,29 @@
+<template>
+    <fieldset style="padding: 0.35em 0.75em 0.625em; border: 2px solid; border-radius: 0.25rem;">
+        <legend>{DSC_More_Details}</legend>
+        <lightning-combobox
+            if:true={ishowproduct}
+            data-id = "productId"
+            onchange={handleChangeOfInput}
+            dropdown-alignment="bottom-left"
+            name={DSC_Product}
+            label={DSC_Product}
+            value={newcase.Product_Type__c}
+            placeholder={DSC_Select_a_Product}
+            options={productList}
+            message-when-value-missing={DSC_error_Please_select_a_product}
+            required="true">
+        </lightning-combobox>
+        <lightning-textarea 
+            data-id="commentId"
+            onchange={handleChangeOfInput}
+            name="comment" 
+            style="--sds-c-textarea-sizing-min-height:114px;"
+            label={DSC_Comments}
+            value={newcase.Description}
+            maxlength="5000"
+            message-when-value-missing={DSC_error_Comment_must_not_be_empty}
+            required="true">
+        </lightning-textarea>
+    </fieldset>
+</template>

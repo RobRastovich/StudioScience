@@ -1,0 +1,19 @@
+.lgc-bg {
+    background-color: rgb(242, 242, 242);
+}
+.caseHeading{
+    background-color: #C2C2C2C2;
+    color: white;
+    height: 40px;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+.tileSpace{
+    margin-bottom: 2%;
+}
+.formSpace{
+    margin-right: 8%;
+}
+.text-align_left{
+    text-align: left;
+}

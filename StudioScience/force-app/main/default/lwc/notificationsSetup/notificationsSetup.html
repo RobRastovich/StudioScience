@@ -1,0 +1,68 @@
+<template>
+    <lightning-card title="Conversation Notifications Setup" icon-name="utility:notification">
+        <template if:true={alreadyHaveNotificationsSettings}>
+            <lightning-button
+                    icon-name="utility:save"
+                    icon-position="left"
+                    label="Save"
+                    onclick={handleSave}
+                    slot="actions"
+                    variant="brand">
+            </lightning-button>
+            <div class="c-container">
+                <lightning-layout multiple-rows="true">
+                    <lightning-layout-item padding="around-small" size="12">
+                        <lightning-layout>
+                            <lightning-layout-item padding="around-small" size="3">
+                                <lightning-radio-group
+                                        label="New Chat or Messaging request via Omni Channel"
+                                        name="NewMessageRequest"
+                                        onchange={handleChangeNewChat}
+                                        options={options}
+                                        value={valueChatRequest}>
+                                </lightning-radio-group>
+                            </lightning-layout-item>
+                            <template if:true={chatRequestActive}>
+                                <lightning-layout-item padding="around-small" size="4">
+                                    <lightning-input
+                                            field-level-help="Customizable new Chat or Messaging request message"
+                                            label="Browser notification"
+                                            max-length="128"
+                                            name="newChatMessage"
+                                            onchange={handleChangeChatMessage}
+                                            value={chatMessage}>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                            </template>
+                        </lightning-layout>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="12">
+                        <lightning-layout>
+                            <lightning-layout-item padding="around-small" size="3">
+                                <lightning-radio-group
+                                        label="New Message"
+                                        name="NewMessage"
+                                        onchange={handleChangeNewMessage}
+                                        options={options}
+                                        value={valueNewMessage}>
+                                </lightning-radio-group>
+                            </lightning-layout-item>
+                            <template if:true={newMessageActive}>
+                                <lightning-layout-item padding="around-small" size="4">
+                                    <lightning-input
+                                            field-level-help="Upload the custom sound file as a static resource
+                                                and insert the URL of the resource here."
+                                            label="Custom Sound URL"
+                                            name="customSoundUrl"
+                                            onchange={handleChangeCustomSoundUrl}
+                                            value={customSoundURL}>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                            </template>
+                        </lightning-layout>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </template>
+    </lightning-card>
+</template>

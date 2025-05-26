@@ -1,0 +1,80 @@
+<template>
+    <fieldset class="fieldsetStyle">
+        <legend>{DSC_Personal_Information}</legend>
+        <lightning-input
+            data-id="firstNameId"
+            onchange={handleChangeOfInput} 
+            type="text" 
+            label={DSC_First_Name} 
+            value={newaccount.FirstName}
+            maxlength="40"
+            message-when-value-missing= {DSC_error_First_Name_must_not_be_empty}
+            required>
+        </lightning-input>
+        <lightning-input 
+            data-id="lastNameId"
+            onchange={handleChangeOfInput}
+            type="text" 
+            label={DSC_Last_Name} 
+            value={newaccount.LastName}
+            maxlength="80"
+            message-when-value-missing={DSC_error_Last_Name_must_not_be_empty}
+            required>
+        </lightning-input>
+        <lightning-input 
+            data-id="emailId"
+            onchange={handleChangeOfInput}
+            type="email" 
+            label={DSC_Email_Address}
+            value={newaccount.PersonEmail} 
+            maxlength="80"
+            message-when-value-missing={DSC_error_Email_Address_must_not_be_empty}
+            required>
+        </lightning-input>
+        <lightning-input 
+            data-id = "confirmEmailId"
+            onchange={handleChangeOfInput}
+            name="confirmemail"
+            type="email" 
+            label={DSC_Confirm_Email}
+            value={confirmemail} 
+            maxlength="80"
+            message-when-value-missing={DSC_error_Confirm_Email_Address_must_not_be_empty}
+            required="true"
+            onblur={handleConfirmEmail}>
+        </lightning-input>
+        <lightning-input 
+            if:true={ishowtelnum} 
+            data-id = "telNumId"
+            onchange={handleChangeOfInput}
+            type="tel" 
+            label={DSC_Phone_Number}
+            value={newaccount.Phone} 
+            maxlength="40"
+            message-when-value-missing={DSC_error_Phone_Number_must_not_be_empty}
+            required>
+        </lightning-input>
+        <lightning-combobox
+            if:true={ishowcountry}
+            data-id = "countryId"
+            onchange={handleChangeOfInput}
+            name={DSC_Country}
+            label={DSC_Country}
+            placeholder={DSC_Select_a_Country}
+            options={countories}
+            value={newaccount.PersonMailingCountry}
+            message-when-value-missing={DSC_error_Please_select_a_country}
+            required="true" >
+        </lightning-combobox>
+        <lightning-combobox
+            if:true={ishowdamageissue}
+            data-id="dtc_issueId"
+            onchange={handleChangeOfInput}
+            name={DTC_Issue}
+            label={DTC_Issue}
+            value={newcase.Damage_Issue__c}
+            placeholder={DTC_Select_An_Issue}
+            options={damageissuesdata}>
+        </lightning-combobox>
+    </fieldset>
+</template>

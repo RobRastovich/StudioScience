@@ -1,0 +1,10 @@
+<template>     
+    <template for:each={announcementsData} for:item="acc" for:index="index">
+        <p key ={acc.id} class={acc.CssClass}> 
+            <lightning-formatted-rich-text 
+                value={acc.Message}>
+            </lightning-formatted-rich-text>
+        </p>
+         <p key ={acc.id}><br></p>         
+    </template>
+</template>

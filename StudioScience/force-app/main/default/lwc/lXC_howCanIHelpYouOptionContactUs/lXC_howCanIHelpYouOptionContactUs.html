@@ -1,0 +1,31 @@
+<template>
+    <fieldset style="padding: 0.35em 0.75em 0.625em; border: 2px solid; border-radius: 0.25rem; ">
+        <legend>{DSC_Please_select_an_option}</legend>
+        <lightning-combobox
+            name={DSC_How_can_we_help_you}
+            data-id = "howCanIHelpId"
+            onchange ={handleChangeInput}
+            label={DSC_How_can_we_help_you}
+            value={newcase.How_can_we_help__c}
+            placeholder={DSC_Select_an_option}
+            options={options}
+            required="true" 
+            message-when-value-missing={DSC_error_Please_select_a_help_option}
+        >
+        </lightning-combobox>
+        <div if:true={isAdditionalInfo}>
+            <lightning-combobox
+                name={DSC_Additional_Information}
+                label={DSC_Additional_Information}
+                data-id="additionalInfoId"
+                value={newcase.AdditionalInformation__c}
+                placeholder={DSC_Select_an_option}
+                options={additionalInfoOption}
+                onchange={handleChangeInput}
+                required="true"
+                message-when-value-missing={DSC_error_Please_select_additional_information} 
+            >
+            </lightning-combobox>
+        </div>
+    </fieldset> 
+</template>

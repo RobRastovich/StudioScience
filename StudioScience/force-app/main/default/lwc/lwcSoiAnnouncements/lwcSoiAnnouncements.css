@@ -1,0 +1,10 @@
+.RedBorder {
+    border: 3px solid red;
+    margin: 10px; 
+    padding: 10px;
+}
+.BlueBorder {
+    border: 3px solid royalblue;
+    margin: 10px; 
+    padding: 10px;
+}

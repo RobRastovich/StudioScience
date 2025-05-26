@@ -1,0 +1,7 @@
+.lbl_formtype{
+    text-align:center; font-weight:bold; margin-top: 25px;
+}
+
+.overflow_init{
+    overflow: initial;
+}

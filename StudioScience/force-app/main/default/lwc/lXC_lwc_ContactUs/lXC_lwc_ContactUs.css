@@ -1,0 +1,11 @@
+.marginTop{
+    margin-top: -2%;
+}
+.fieldsetStyle{
+    padding: 0.35em 0.75em 0.625em; 
+    border: 2px solid; 
+    border-radius: 0.25rem;
+}
+.buttonColor{
+    --sds-c-button-brand-color-background: #5f6769;
+}

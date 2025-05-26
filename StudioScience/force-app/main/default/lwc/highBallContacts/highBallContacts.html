@@ -1,0 +1,37 @@
+<template>
+<lightning-card title="Account Contact" icon-name="standard:contact">
+<lightning-combobox label="Contact List" 
+                    options={contactOptions} 
+                    value={accountcontactvalue}
+                    placeholder = "Select Contact"
+                    onchange={accountcontacthandlechange}>
+</lightning-combobox>
+</lightning-card>
+  
+<template if:true={newAccountContactCreate}>   
+<div class="slds-m-around_medium">
+<lightning-input type="text" name="AccountContactFirstName" label="First Name" required = "true" value={AccountContactFirstName} onchange={genericOnChange} ></lightning-input>
+<lightning-input type="text" name="AccountContactLastName"  label="Last Name" required = "true" value={AccountContactLastName} onchange={genericOnChange} ></lightning-input>
+<lightning-input type="text" name="AccountContactEmail" label="Email" required = "true" value={AccountContactEmail} onchange={genericOnChange}></lightning-input>
+<lightning-input type="text" name="AccountContactPhone" label="Phone" required = "true" value={AccountContactPhone} onchange={genericOnChange}></lightning-input>
+</div>
+</template>
+
+  <lightning-card title="Buyer Contact" icon-name="standard:contact">
+    <lightning-combobox label="Contact List" 
+                        options={contactOptions} 
+                        value={buyercontactvalue}
+                        placeholder = "Select Contact"
+                        onchange={buyercontacthandlechange}>
+    </lightning-combobox>
+    </lightning-card>
+      
+<template if:true={newBuyerContactCreate}>   
+<div class="slds-m-around_medium">
+  <lightning-input type="text" name="BuyerContactFirstName" label="First Name" required = "true" value={BuyerContactFirstName} onchange={genericOnChange} ></lightning-input>
+  <lightning-input type="text" name="BuyerContactLastName"  label="Last Name" required = "true" value={BuyerContactLastName} onchange={genericOnChange} ></lightning-input>
+  <lightning-input type="text" name="BuyerContactEmail" label="Email" required = "true" value={BuyerContactEmail} onchange={genericOnChange}></lightning-input>
+  <lightning-input type="text" name="BuyerContactPhone" label="Phone" required = "true" value={BuyerContactPhone} onchange={genericOnChange}></lightning-input>
+</div>                   
+</template>     
+</template>

@@ -1,0 +1,130 @@
+<template>
+    <div class="marginTop">
+       <div class="slds-p-around_medium">
+           <c-custom-toast auto-close-time="8000"></c-custom-toast>
+           <c-l-X-C-_progress-Indicator 
+               if:true={ishowProgrssIndicator} 
+               currentstep={currentStep}>
+           </c-l-X-C-_progress-Indicator>
+           <div class="slds-p-top_xx-small" if:true={ishowSelectAnOption}>
+               <c-l-X-C-_how-Can-I-Help-You-Option-Contact-Us
+                   newcase = {newCase} 
+                   optiondata = {howCanIHelpYouOption} 
+                   onselectedoption={handleSelectedOption} 
+                   onselectedadditionalinfo={handleAdditionalInfo}>
+               </c-l-X-C-_how-Can-I-Help-You-Option-Contact-Us>
+           </div>
+           <div if:true={isloaded}>
+               <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                   <div class="slds-modal__container">  
+                       <c-l-X-C-_generic-Spinner 
+                            isloaded={isloaded}
+                            sldsclass = "slds-is-relative"
+                            variant = "brand"
+                            size = "Large"
+                            alternativetext = "Loading...">
+                       </c-l-X-C-_generic-Spinner>
+                   </div>
+               </section>
+               <div class="slds-backdrop slds-backdrop_open"></div>
+           </div>
+           <div class="slds-p-top_xx-small" if:true={ishowPersonalInfo}>
+               <c-l-X-C-_personal-Info-Of-Contact-Us 
+                   newaccount = {newAccount}
+                   newcase = {newCase} 
+                   onpersonaldata = {handlePersonalInfo}
+                   country={countories} 
+                   ishowtelnum = {ishowTelNum} 
+                   ishowcountry = {ishowCountry} 
+                   damageissuesdata = {dagmageIssues} 
+                   confirmemail = {confirmEmail}
+                   ishowdamageissue={ishowDamageIssue}>
+               </c-l-X-C-_personal-Info-Of-Contact-Us> 
+           </div>
+           <div class="slds-p-top_xx-small" if:true={ishowAddress}>
+               <c-l-X-C-_address-Of-Contact-Us 
+                   onaddressdataevent = {handleAddressInfo} 
+                   newaccount = {newAccount} 
+                   country={countories}>
+               </c-l-X-C-_address-Of-Contact-Us>
+           </div>
+           <div class="slds-p-top_xx-small" if:true={ishowProductInfo}>
+               <c-l-X-C-_product-Info-Of-Contact-Us
+                   onproductdataevent = {handleProductInfo} 
+                   product={productList}
+                   newcase = {newCase}
+                   onishowlotcode = {handleIshowLotCode}  
+                   issuesdata = {issues}
+                   productsizeoption = {productSizeOption} 
+                   doyoustillhaveproduct = {doYouStillHaveProduct}
+                   lotcode = {brandLotcode}>
+               </c-l-X-C-_product-Info-Of-Contact-Us>
+           </div>
+           <div class="slds-p-top_xx-small" if:true={ishowMoreDetails}>
+            <!-- onmoredetaildataevent = {handleMoreDetailInfo} -->
+               <c-l-W-C-_more-Details-Of-Contact-Us 
+                   onmoredetaildataevent = {handleMoreDetailInfo}
+                   product={productList} 
+                   newcase = {newCase} 
+                   ishowproduct = {ishowProductInMore}>
+               </c-l-W-C-_more-Details-Of-Contact-Us> 
+           </div>
+           <div class="slds-p-top_xx-small" if:true={ishowAttachment}>
+               <fieldset class="fieldsetStyle">
+                   <legend>{DSC_Attachment}</legend>
+                   <lightning-file-upload
+                       label={DSC_Can_you_attach_a_picture}
+                       name="fileUploader"
+                       accept={File_Format}
+                       record-id={myRecordId}
+                       onuploadfinished={handleFileUploader}
+                       style="--sds-c-button-brand-color-background: #5f6769"
+                       multiple>
+                   </lightning-file-upload>
+                   <p if:false={isFileSelected}>No File Selected</p>
+                   <template if:true={isFileSelected} for:each={uploadedDocuments} for:item="FileName" for:index="index">
+                    <div key={FileName} class = "slds-p-left_medium slds-grid slds-gutters">
+                       <p key={FileName}>{FileName}</p>
+                        <!-- <lightning-button-icon icon-name="utility:close" variant="border-filled"
+                            size="x-small"
+                            alternative-text="Delete"
+                            data-id={index}
+                            key={FileName}
+                            class="slds-p-left_xx-small"
+                            onclick = {handleFileUpload}>
+                        </lightning-button-icon> -->
+                    </div>
+                   </template>
+               </fieldset>
+           </div>
+           <div class="slds-p-top_x-small">
+               <c-l-X-C-_privacy-Policy-And-Recaptcha
+                   if:true={ishowPrivacyAndRecaptcha} 
+                   ischeckedprivacypolicy = {isCheckedPrivacyPolicy}
+                   onhandleprivacycheckbox = {handlePrivacyPolicyInfo}>
+               </c-l-X-C-_privacy-Policy-And-Recaptcha>
+           </div>
+           <div class="slds-p-top_xx-small slds-p-bottom_small">
+               <div class="slds-float_left">
+                   <lightning-button
+                   if:true={ishowbackButton}
+                   label={DSC_button_Back}
+                   variant="brand"
+                   onclick={handlebackButton}
+                   disabled={isbackButtonDisable}></lightning-button>
+               </div>
+               <div class="slds-float_right">
+                   <lightning-button
+                   if:true={ishowSubmit}
+                   label={submitButtonLabel}
+                   variant="brand"
+                   onclick={handleSubmit}
+                   ></lightning-button>
+               </div>      
+           </div>
+       </div>
+   </div>
+   <div if:true={ishowLastMessage} align="center" class="slds-p-around_medium">
+       <p class={lastMessageType}>{lastMessage}</p>
+   </div>
+</template>

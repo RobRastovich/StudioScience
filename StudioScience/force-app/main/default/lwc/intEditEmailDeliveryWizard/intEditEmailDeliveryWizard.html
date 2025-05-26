@@ -1,0 +1,248 @@
+<template>
+    <lightning-modal-body>
+        <div class="slds-is-relative" style="height: 50vh" lwc:ref="spinner">
+            <lightning-spinner
+                alternative-text="Loading"
+                class="slds-align_absolute-center"
+                size="medium"
+                variant="brand"
+            ></lightning-spinner>
+        </div>
+
+        <div lwc:ref="body" class="slds-hide">
+            <lightning-record-edit-form
+                object-api-name="INT_EmailDelivery__c"
+                record-id={recordId}
+                onload={handleLoad}
+                onsuccess={handleSuccess}
+            >
+                <lightning-messages></lightning-messages>
+
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item size="6">
+                        <lightning-input-field
+                            field-name="INT_CampaignName__c"
+                            variant="label-stacked"
+                            value={record.INT_CampaignName__c}
+                            onchange={handleChange}
+                        >
+                        </lightning-input-field>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="6">
+                        <lightning-input-field
+                            field-name="INT_CommunicationType__c"
+                            variant="label-stacked"
+                            value={record.INT_CommunicationType__c}
+                            onchange={handleChange}
+                        >
+                        </lightning-input-field>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="4">
+                        <lightning-combobox
+                            label="Brand"
+                            placeholder="--None--"
+                            options={comboboxOptions.brand}
+                            data-field-name="INT_Brand__c"
+                            class="slds-p-horizontal_xx-small"
+                            value={record.INT_Brand__c}
+                            onchange={handleChange}
+                        ></lightning-combobox>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="4">
+                        <lightning-combobox
+                            label="Market"
+                            placeholder="--None--"
+                            options={comboboxOptions.market}
+                            data-field-name="INT_Market__c"
+                            class="slds-p-horizontal_xx-small"
+                            value={record.INT_Market__c}
+                            onchange={handleChange}
+                        ></lightning-combobox>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="4">
+                        <lightning-input-field
+                            field-name="INT_Language__c"
+                            variant="label-stacked"
+                            value={record.INT_Language__c}
+                            onchange={handleChange}
+                        >
+                        </lightning-input-field>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="4">
+                        <div class="slds-form-element slds-p-horizontal_xx-small">
+                            <label class="slds-form-element__label">Send Out Date Time</label>
+                            <lightning-helptext
+                                content="Per SLA, the targeted send-out date must be 5 days minimum since request submission."
+                            ></lightning-helptext>
+                            <div class="slds-form-element__control">
+                                <lightning-input
+                                    name="INT_SendOutDateTime__c"
+                                    type="datetime"
+                                    value={record.INT_SendOutDateTime__c}
+                                    variant="label-hidden"
+                                    onchange={handleChange}
+                                    min={minDate}
+                                >
+                                </lightning-input>
+                            </div>
+                        </div>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="4">
+                        <div class="slds-form-element slds-p-horizontal_xx-small">
+                            <label class="slds-form-element__label">Is this request related to a previous send?</label>
+                            <div class="slds-form-element__control">
+                                <div class="slds-clearfix">
+                                    <div class="slds-float_right">
+                                        <label class="slds-checkbox_toggle slds-grid">
+                                            <input
+                                                type="checkbox"
+                                                name="checkbox-toggle-16"
+                                                value="checkbox-toggle-16"
+                                                aria-describedby="checkbox-toggle-16"
+                                                checked={sendToggleValue}
+                                                onchange={handleSendToggle}
+                                            />
+                                            <span id="checkbox-toggle-16" class="slds-checkbox_faux_container">
+                                                <span class="slds-checkbox_faux"></span>
+                                                <span class="slds-checkbox_on">Yes</span>
+                                                <span class="slds-checkbox_off">No</span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="4">
+                        <div class="slds-form-element slds-p-horizontal_xx-small">
+                            <label class="slds-form-element__label" for="combobox-id-2" id="combobox-label-id-151">Send</label>
+                            <div class="slds-form-element__control">
+                                <div class="slds-combobox_container">
+                                    <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                                        <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                                            <input
+                                                type="text"
+                                                data-name="INT_PreviousDelivery__c"
+                                                class="slds-input slds-combobox__input"
+                                                id="combobox-id-11"
+                                                aria-autocomplete="list"
+                                                aria-controls="listbox-id-9"
+                                                aria-expanded="false"
+                                                aria-haspopup="listbox"
+                                                autocomplete="off"
+                                                role="combobox"
+                                                placeholder="--None--"
+                                                onfocus={showPreviousSendOptions}
+                                                value={selectedSendValue}
+                                                disabled={isSendDisabled}
+                                            />
+                                            <span
+                                                class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right"
+                                            >
+                                                <svg
+                                                    class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default"
+                                                    aria-hidden="true"
+                                                >
+                                                    <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#down"></use>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div
+                                            if:true={previousSends}
+                                            id="listbox-id-2"
+                                            class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid"
+                                            role="listbox"
+                                            aria-label="None"
+                                            tabindex="0"
+                                            aria-busy="false"
+                                        >
+                                            <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                                <template for:each={previousSends} for:item="previousSend">
+                                                    <li
+                                                        key={previousSend.value}
+                                                        data-value={previousSend.value}
+                                                        role="presentation"
+                                                        onclick={selectPreviousSend}
+                                                        class="slds-listbox__item"
+                                                    >
+                                                        <div
+                                                            class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                                            role="option"
+                                                        >
+                                                            <span class="slds-media__body">
+                                                                <span class="slds-listbox__option-text slds-listbox__option-text_entity">
+                                                                    {previousSend.campaignName}
+                                                                </span>
+                                                                <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">
+                                                                    {previousSend.label}
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="6">
+                        <lightning-input-field
+                            field-name="INT_FromName__c"
+                            variant="label-stacked"
+                            value={record.INT_FromName__c}
+                            onchange={handleChange}
+                            field-level-help="Test"
+                        >
+                        </lightning-input-field>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="6">
+                        <lightning-input-field
+                            field-name="INT_FromAddress__c"
+                            variant="label-stacked"
+                            value={record.INT_FromAddress__c}
+                            onchange={handleChange}
+                        >
+                        </lightning-input-field>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12">
+                        <lightning-input-field
+                            field-name="INT_Subject__c"
+                            variant="label-stacked"
+                            value={record.INT_Subject__c}
+                            onchange={handleChange}
+                        >
+                        </lightning-input-field>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12">
+                        <lightning-input-field
+                            field-name="INT_Preheader__c"
+                            variant="label-stacked"
+                            value={record.INT_Preheader__c}
+                            onchange={handleChange}
+                        >
+                        </lightning-input-field>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-record-edit-form>
+        </div>
+    </lightning-modal-body>
+
+    <lightning-modal-footer>
+        <lightning-button label="Cancel" class="slds-float_left" data-action="Cancel" onclick={handleCancel} variant="neutral">
+        </lightning-button>
+        <lightning-button label="Save" onclick={handleClick} variant="brand" disabled> </lightning-button>
+    </lightning-modal-footer>
+</template>

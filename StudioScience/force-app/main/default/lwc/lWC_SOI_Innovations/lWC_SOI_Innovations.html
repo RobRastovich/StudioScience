@@ -1,0 +1,150 @@
+<template>
+    <template if:true={isPageVisible}>
+        <c-lwc-soi-announcements></c-lwc-soi-announcements>
+        <div class="slds-grid slds-gutters slds-wrap">
+            <div class="slds-col slds-size_1-of-2">
+                <span>
+                    <lightning-combobox name="innovationSample" label={innovationFormLabelsList.innovationSampleLabel} value={innovationSample} options={innovationSamples} placeholder="" onchange={handleChange} message-when-value-missing={innovationFormLabelsList.fieldErrorMessage} required>
+                    </lightning-combobox>
+                </span>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <span>                
+                    <lightning-input name="cutoffDate" type="date" label={innovationFormLabelsList.cutoffDateLabel} value={cutoffDate} onchange={handleChange} message-when-value-missing={innovationFormLabelsList.fieldErrorMessage} disabled required>
+                    </lightning-input>                
+                </span>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <span>                
+                    <lightning-input name="submittedBy" type="text" label={innovationFormLabelsList.submittedByLabel} value={submittedBy}  max-length="50" onchange={handleChange} message-when-value-missing={innovationFormLabelsList.fieldErrorMessage} required>
+                    </lightning-input>                
+                </span>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <span>                
+                    <lightning-input name="email" type="email" label={innovationFormLabelsList.emailLabel} value={email}  max-length="65" pattern="^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$" onchange={handleChange} message-when-value-missing={innovationFormLabelsList.fieldErrorMessage} message-when-type-mismatch={innovationFormLabelsList.fieldErrorMessage} message-when-pattern-mismatch={innovationFormLabelsList.fieldErrorMessage} required>
+                    </lightning-input>                
+                </span>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <span>
+                    <lightning-combobox name="soldTo" label={innovationFormLabelsList.soldToLabel} value={soldTo} options={soldToOptions} onchange={handleChange} message-when-value-missing={innovationFormLabelsList.fieldErrorMessage} required>
+                    </lightning-combobox>
+                </span>
+            </div>
+            <div class="slds-col slds-size_1-of-2 marginTop">
+                <span>
+                    <lightning-input name="canadaCheckbox" type="checkbox" label={innovationFormLabelsList.beamCanadaLabel} value={canadaCheck} onchange={handleChange}>
+                    </lightning-input>
+                </span>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <span>
+                    <template if:false={canadaCheck}>
+                        <lightning-input name="costCenter" type="text" label={innovationFormLabelsList.costCenterLabel} value={costCenter} max-length="12" onchange={handleChange} field-level-help={innovationFormLabelsList.costCenterHelptext} message-when-value-missing={innovationFormLabelsList.fieldErrorMessage} required>
+                        </lightning-input>
+                    </template>
+                    <template if:true={canadaCheck}>
+                        <lightning-input name="wbsElement" type="text" label={innovationFormLabelsList.wbsElementLabel} value={wbsElement} max-length="24" onchange={handleChange} message-when-value-missing={innovationFormLabelsList.fieldErrorMessage} required>
+                        </lightning-input>
+                    </template>
+                </span>
+            </div>
+        </div>
+        <h1 class="orderHeading">{innovationFormLabelsList.projectInformationLabel}</h1>
+        <c-lwc-soi-innovation-order-table country={country} state-filter-values={stateFilterValues} ship-address-map={shipAddressMap}></c-lwc-soi-innovation-order-table>
+        <div class="slds-grid slds-gutters slds-wrap">
+            <div class="slds-col slds-size_1-of-2">
+                <span>                
+                    <lightning-textarea name="notes" label={innovationFormLabelsList.notesLabel} value={notes} max-length="150" onchange={handleChange} field-level-help={innovationFormLabelsList.notesHelptext} message-when-value-missing={innovationFormLabelsList.fieldErrorMessage} required>
+                    </lightning-textarea>                
+                </span>
+            </div>
+            <div class="slds-col slds-size_1-of-2 marginTop">
+                <span>                
+                    <lightning-input name="resubmissionCheckbox" type="checkbox" label={innovationFormLabelsList.resubmissionLabel} value={resubmission} onchange={handleChange} field-level-help={innovationFormLabelsList.resubmissionHelptext}>
+                    </lightning-input>                
+                </span>
+            </div>
+        </div>
+        <div class="slds-float_right">
+            <lightning-button class="submitBtn" variant="brand" label={innovationFormLabelsList.submitLabel} title="Brand action" onclick={save}></lightning-button>
+            <lightning-button variant="brand-outline" label={innovationFormLabelsList.resetLabel} title="Brand action" onclick={clearAll}></lightning-button>
+        </div>
+        
+        <div class="slds-modal modalSubmitId">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <lightning-button-icon size="large" icon-name="utility:close" variant="bare" onclick={closeModalForSubmit}
+                                          alternative-text="Close window." class="slds-modal__close" icon-class="light"></lightning-button-icon>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">{innovationFormLabelsList.submissionLabel}</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around--medium">
+                    {innovationFormLabelsList.submitModalMessage}<br/>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="neutral" label={innovationFormLabelsList.cancelLabel} onclick = {closeModalForSubmit}></lightning-button>
+                    <lightning-button variant="brand" label={innovationFormLabelsList.okLabel} onclick = {finalSubmission}></lightning-button>
+                </footer>
+            </div>
+        </div> 
+        <div class="slds-backdrop backdropSubmitId"></div>
+
+        <div class="slds-modal modalIncorrectId">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <lightning-button-icon size="large" icon-name="utility:close" variant="bare" onclick={closeModalForInvalid}
+                                          alternative-text="Close window." class="slds-modal__close" icon-class="light"></lightning-button-icon>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">{innovationFormLabelsList.warningLabel}</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around--medium">
+                    {innovationFormLabelsList.incorrectModalMessage}<br/>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="brand" label={innovationFormLabelsList.okLabel} onclick = {closeModalForInvalid}></lightning-button>
+                </footer>
+            </div>
+        </div> 
+        <div class="slds-backdrop backdropIncorrectId"></div>
+        
+        <div class="slds-modal modalFormResetId">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <lightning-button-icon size="large" icon-name="utility:close" variant="bare" onclick={closeModalForReset}
+                                          alternative-text="Close window." class="slds-modal__close" icon-class="light"></lightning-button-icon>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">{innovationFormLabelsList.warningLabel}</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    {innovationFormLabelsList.resetModalMessage}<br/>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="neutral" label={innovationFormLabelsList.cancelLabel} onclick = {closeModalForReset}></lightning-button>
+                    <lightning-button type="reset" variant="brand" label={innovationFormLabelsList.okLabel} onclick = {clearAllData}></lightning-button>
+                </footer>
+            </div>
+        </div> 
+        <div class="slds-backdrop backdropFormResetId"></div>
+
+        <div class="slds-modal modalFormErrorId">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <lightning-button-icon size="large" icon-name="utility:close" variant="bare" onclick={closeModalForError}
+                                          alternative-text="Close window." class="slds-modal__close" icon-class="light"></lightning-button-icon>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">{innovationFormLabelsList.errorOccurredLabel}</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    {innovationFormLabelsList.errorModalMessage}<br/>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="brand" label={innovationFormLabelsList.okLabel} onclick = {closeModalForError}></lightning-button>
+                </footer>
+            </div>
+        </div> 
+        <div class="slds-backdrop backdropFormErrorId"></div>
+    </template>
+    <template if:false={isPageVisible}>
+        <div class="slds-align_absolute-center">
+            <h2><span style="color:green;">{innovationFormLabelsList.successMessage}</span></h2>
+        </div>
+    </template>
+</template>

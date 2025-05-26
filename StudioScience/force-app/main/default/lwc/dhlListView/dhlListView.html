@@ -1,0 +1,16 @@
+<template>  
+    <lightning-card>
+      <template if:true={displayCasesList}>
+        <c-dhl-cases-list currentpage={page} onrecordsload={handleRecordsLoad} pagesize={pagesize} 
+          ondetailpage={handleDetailPage} oncurrentpagechange={handlePageChange}></c-dhl-cases-list>  
+        <div class="slds-m-around_medium">  
+          <c-pagination-bottom onprevious={handlePrevious} onnext={handleNext} onfirst={handleFirst}  
+            onlast={handleLast} currentpage={page} totalrecords={totalrecords} pagesize={pagesize}>  
+          </c-pagination-bottom>  
+        </div>
+      </template>
+      <template if:false={displayCasesList} >
+        <c-dhl-case caseid={caseid} ondetailtolistpage={handleDetailToListPage}> </c-dhl-case>  
+      </template>        
+    </lightning-card>
+  </template>

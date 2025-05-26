@@ -1,0 +1,92 @@
+.backgroundImg{ 
+    margin: 0;
+    padding: 1.5rem 1rem;
+    position: relative;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 0;
+	min-height: 100vh;
+	background-attachment:fixed; 
+}
+.backgroundImg:before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, .5);
+    z-index: -1;
+}
+
+.brand-logo {
+	max-width: 300px;
+    display: block;
+    margin: 0px auto;
+}
+
+.slds-spinner-text {
+	width: 320px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.slds-spinner--large .slds-spinner-text {
+	transform: translate(-26%, -50%) rotate(-90deg);
+}
+.slds-spinner_container{
+	position: fixed;
+	backdrop-filter: blur(10px);
+}
+
+.form_container{
+	background-color: rgba(18, 18, 18, .5);
+    border-radius: 1rem;
+    padding: 1rem 3rem;
+}
+.form_inner h3 {
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: .5rem;
+    color:#fff;
+} 
+  .privacypolicy{
+    color:#fff;
+    font-weight:700;
+}
+  
+.thankYou{
+	color:#008000;
+	text-align: center;
+	font-size: larger;
+	font-weight: bold;
+}
+
+.error{
+	color:#ff0000;
+	text-align: center;
+	font-size: larger;
+	font-weight: bold;
+} 
+.message_container{
+	background-color: rgba(255, 255, 255, .5);
+	padding: 1rem 2rem;
+}
+.success_icon{
+	--lwc-colorTextIconInverse: #008000;
+	display: flex;
+	justify-content: center;
+}
+.error_icon{
+	--lwc-colorTextIconInverse: #ff0000;
+	display: flex;
+	justify-content: center;
+}
+@media(max-width:767px){
+    .form_container{
+        padding:1rem 2rem;
+    }
+}

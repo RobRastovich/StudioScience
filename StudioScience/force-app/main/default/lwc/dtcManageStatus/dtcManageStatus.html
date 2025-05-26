@@ -1,0 +1,26 @@
+<template>
+    <lightning-card title="Manage Status" icon-name="standard:case_transcript"> 
+        <lightning-record-edit-form record-id={recordId} object-api-name="Case" mode="edit">
+        <div class="slds-m-around--xx-large">
+            <div class="slds-m-left_large">
+                <c-custom-toast auto-close-time="8000"></c-custom-toast>
+            </div>
+            <div class="container-fluid slds-grid slds-wrap">
+                <lightning-combobox name="Status" label="Status" value={selectedStatusValue} required placeholder="Select Status" options={statusoptions} onchange={handleStatusChange}></lightning-combobox>
+            </div>
+            <div class="container-fluid slds-grid slds-wrap">
+                <lightning-combobox name="Sub_Status__c" label="Sub Status" class="slds-m-top_small" value={selectedSubstatusValue} placeholder="Select Sub Status" options={substatusoptions} onchange={handleSubStatusChange} disabled={isDisabled}></lightning-combobox>
+            </div>
+            <div class="container-fluid slds-grid slds-wrap slds-m-top_large">
+                <lightning-button type="submit" label="Save" variant="brand" onclick={handleSubmit}></lightning-button>
+                <template if:false={isLoaded}>
+                    <div class="spinner_class_div">
+                        <lightning-spinner class="spinner_class" alternative-text="Loading" variant="brand">
+                        </lightning-spinner>
+                    </div>
+                </template>
+            </div>
+        </div>
+        </lightning-record-edit-form>
+    </lightning-card>
+</template>

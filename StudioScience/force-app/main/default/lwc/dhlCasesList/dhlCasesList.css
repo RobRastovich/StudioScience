@@ -1,0 +1,27 @@
+.fontBgTheme{
+    color: white !important;
+    background-color: #C2C2C2 !important;
+}
+.customClass{
+    color:#CC0000 !important;
+    background-color: white !important;
+}
+.customFontRed{
+    color:#CC0000 !important;
+}
+.customFontWhite{
+    color:white;
+}
+.customGreyBg{
+    background-color: #C2C2C2 !important;
+}
+.customRedBgFontWhite{
+    color: white !important;
+    background-color: #CC0000 !important;
+}
+.customNoRecords{
+    text-align: center; font-size: large; background-color:#C4C4C4; color:#CC0000; font-weight:bold;
+}
+.m_left_20{
+    margin-left:20px;
+}

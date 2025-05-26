@@ -1,0 +1,39 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <div class="slds-is-relative" style="height: 6rem" lwc:ref="spinner">
+        <div role="status" class="slds-spinner slds-spinner_medium">
+            <span class="slds-assistive-text">Loading</span>
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+
+    <div lwc:ref="body" class="slds-hide">
+        <lightning-quick-action-panel>
+            <div>
+                <div class="slds-p-bottom_small">
+                    <span>
+                        Please provide any additional details or information necessary for your request.
+                    </span>
+                    <br/>
+                    <span>
+                        Be aware that any modifications made after this stage could potentially impact the development SLAs.
+                    </span>
+                </div>
+
+                <lightning-textarea variant="label-hidden" lwc:ref="notes"></lightning-textarea>
+            </div>
+
+            <div slot="footer">
+                <div class="slds-clearfix">
+                    <div class="slds-float_left">
+                        <lightning-button variant="neutral" label="Cancel" data-name="cancel" onclick={handleClick}></lightning-button>
+                    </div>
+                    <div class="slds-float_right">
+                        <lightning-button variant="brand" label="Submit" data-name="save" onclick={handleClick}></lightning-button>
+                    </div>
+                </div>
+            </div>
+        </lightning-quick-action-panel>
+    </div>
+</template>

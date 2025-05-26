@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+      <target>lightning__AppPage</target>
+      <target>lightning__RecordPage</target>
+      <target>lightning__HomePage</target>
+      <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__FlowScreen">
+          <property name="AccountContactFirstName" type="String" />
+          <property name="AccountContactLastName" type="String"/>
+          <property name="AccountContactEmail" type= "String" />
+          <property name="AccountContactPhone" type="String"/>
+           <property name="AccountContactFirstName1" type="String" />
+          <property name="AccountContactLastName1" type="String"/>
+          <property name="AccountContactEmail1" type= "String" />
+          <property name="AccountContactPhone1" type="String"/>
+          <property name="accountid" type="String" />
+          <property name="contactid" type="String" />
+          <property name="conid" type="String" />
+          <property name="value" type="String" />
+          <property name="accountcontactvalue" type="String" />
+          <property name="buyercontactvalue" type="String" />
+          <property name="BuyerContactFirstName" type="String"/>
+          <property name="BuyerContactLastName" type="String"/>
+          <property name="BuyerContactEmail" type= "String"/>
+          <property name="BuyerContactPhone" type="String"/> 
+          <property name="newCreate" type="String"/>
+          <property name="newAccountContactCreate" type="Boolean"/>
+          <property name="newBuyerContactCreate" type="Boolean"/>
+
+      </targetConfig>
+</targetConfigs>
+  </LightningComponentBundle>

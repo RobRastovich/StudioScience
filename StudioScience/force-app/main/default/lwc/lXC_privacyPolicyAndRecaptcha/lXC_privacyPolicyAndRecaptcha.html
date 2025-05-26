@@ -1,0 +1,44 @@
+<template>
+    <!-- <div class="slds-grid">
+            <lightning-input 
+                name="Contact_Us_Page_Privacy_Consent__c"
+                type="checkbox"
+                label={privacyPolicy}
+                onchange={handleChangePrivacyPolicy} 
+                checked = {ischeckedprivacypolicy}
+                message-when-value-missing={Contact_Us_Page_Privacy_Consent}
+                required="true">
+            </lightning-input>
+    </div> -->
+    <!-- slds-has-error -->
+    <div class={chekBoxClass}>
+        <div class="slds-form-element__control">
+          <div class="slds-checkbox">
+            <abbr class="slds-required" title="required">*</abbr>
+            <input type="checkbox" name="options" data-id="input" id="checkbox-unique-id-85" value="checkbox-unique-id-85" aria-describedby="error_01" onchange={handleChangePrivacyPolicy} />
+            <label class="slds-checkbox__label" for="checkbox-unique-id-85">
+              <span class="slds-checkbox_faux"></span>
+              <span class="slds-form-element__label">
+                {privacyPolicy} <a href='https://www.suntoryglobalspirits.com/privacy-policy' target="_blank">{DSC_Contact_Us_Page_Privacy_Policy}</a>
+              </span>
+            </label>
+        </div>
+        </div>
+        <div if:true={ishowPrivacyError} class="slds-form-element__help" id="error_01">{Contact_Us_Page_Privacy_Consent}</div>
+    </div>
+    <!-- <span class="slds-form-element__label">{privacyPolicy} <a href='https://www.beamsuntory.com/en/privacy-policy' target="_blank">{DSC_Contact_Us_Page_Privacy_Policy}</a></span> -->
+    <div class="slds-p-top_xx-small" style="height: 110px;">
+        <iframe
+            width="100%"
+            frameborder="0"
+            scrolling="no"
+            src={src}
+            class="margin5">
+        </iframe>
+        <div if:true={ishowError} class="errorMargin">
+            <span class="slds-form-element__help slds-text-color_error">
+                {ReCaptcha_Message}
+            </span>
+        </div>
+    </div>
+</template>

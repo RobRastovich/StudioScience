@@ -1,0 +1,143 @@
+<template>  
+  <lightning-card title="Cases List" icon-name="standard:case">  
+    <div class="slds-m-around_medium"> 
+      <div slot="actions">
+          <div class="slds-float_left"><lightning-combobox name="type" label="Select a filter" value={value} placeholder="Select Type" options={options} onchange={handleChange} ></lightning-combobox></div> 
+          <div class="slds-float_right" ><lightning-input type="search" data-id="inputTypeSearch" onchange={handleKeyChange} label="Search"  
+              value={searchKey} class="slds-m-bottom_small"></lightning-input> </div>  
+      </div> 
+      <template if:false={isLoaded}>
+        <div class="spinner_class_div">
+            <lightning-spinner class="spinner_class" alternative-text="Loading" variant="brand">
+            </lightning-spinner>
+        </div>
+    </template>
+      <template if:true={cases}>  
+        <table  
+          class="slds-table slds-table_bordered slds-table_striped slds-table_cell-buffer slds-table_fixed-layout">  
+          <thead>  
+            <tr class="slds-text-heading_label">  
+              <th scope="col" class={customClass} onmouseover={mouseOver} onmouseout={mouseOut}>  
+              <a data-id="CaseNumber" onclick={sortCaseNumber} >
+                <div class={customClass1} title="CaseNumber" >Case Number 
+                <template if:true={isSortCaseNumber}>
+                  <lightning-icon
+                    class="slds-button__icon slds-icon-utility-down slds-icon_container forceIcon" value="down" icon-name="utility:down" size="x-small">
+                  </lightning-icon> 
+                </template>
+                <template if:false={isSortCaseNumber}>
+                  <lightning-icon
+                    class="slds-button__icon slds-icon-utility-up slds-icon_container forceIcon" value="up" icon-name="utility:up" size="x-small">
+                  </lightning-icon> 
+                </template>
+              </div>  
+              </a>
+              </th>
+              <th scope="col" class={customClassName} onmouseover={mouseOverName} onmouseout={mouseOutName}>  
+                <a data-id="First_name__c" onclick={sortName} >
+                  <div class={customClass_Name} title="Name" >Name 
+                  <template if:true={isSortName}>
+                    <lightning-icon
+                      class="slds-button__icon slds-icon-utility-down slds-icon_container forceIcon" value="down" icon-name="utility:down" size="x-small">
+                    </lightning-icon> 
+                  </template>
+                  <template if:false={isSortName}>
+                    <lightning-icon
+                      class="slds-button__icon slds-icon-utility-up slds-icon_container forceIcon" value="up" icon-name="utility:up" size="x-small">
+                    </lightning-icon> 
+                  </template>
+                </div>  
+                </a>
+                </th>
+            <th scope="col" class={customClassType} onmouseover={mouseOverType} onmouseout={mouseOutType}>  
+              <a data-id="AdditionalInformation__c" onclick={sortType} >
+                <div class={customClass_Type} title="Type" >Type 
+                <template if:true={isSortType}>
+                  <lightning-icon
+                    class="slds-button__icon slds-icon-utility-down slds-icon_container forceIcon" value="down" icon-name="utility:down" size="x-small">
+                  </lightning-icon> 
+                </template>
+                <template if:false={isSortType}>
+                  <lightning-icon
+                    class="slds-button__icon slds-icon-utility-up slds-icon_container forceIcon" value="up" icon-name="utility:up" size="x-small">
+                  </lightning-icon> 
+                </template>
+              </div>  
+              </a>
+              </th>  
+              <th scope="col" class={customClassStatus} onmouseover={mouseOverStatus} onmouseout={mouseOutStatus}>  
+                <a data-id="DHL_Status__c" onclick={sortStatus} >
+                  <div class={customClass_Status} title="Status" >Status
+                  <template if:true={isSortStatus}>
+                    <lightning-icon
+                      class="slds-button__icon slds-icon-utility-down slds-icon_container forceIcon" value="down" icon-name="utility:down" size="x-small">
+                    </lightning-icon> 
+                  </template>
+                  <template if:false={isSortStatus}>
+                    <lightning-icon
+                      class="slds-button__icon slds-icon-utility-up slds-icon_container forceIcon" value="up" icon-name="utility:up" size="x-small">
+                    </lightning-icon> 
+                  </template>
+                </div>  
+                </a>
+                </th>  
+              <th scope="col" class={customClassCreatedOn} onmouseover={mouseOverCreatedOn} onmouseout={mouseOutCreatedOn}>  
+                <a data-id="CreatedDate" onclick={sortCreatedOn} >
+                  <div class={customClass_CreatedOn} title="Created on" >Created on
+                  <template if:true={isSortCreatedOn}>
+                    <lightning-icon
+                      class="slds-button__icon slds-icon-utility-down slds-icon_container forceIcon" value="down" icon-name="utility:down" size="x-small">
+                    </lightning-icon> 
+                  </template>
+                  <template if:false={isSortCreatedOn}>
+                    <lightning-icon
+                      class="slds-button__icon slds-icon-utility-up slds-icon_container forceIcon" value="up" icon-name="utility:up" size="x-small">
+                    </lightning-icon> 
+                  </template>
+                </div>  
+                </a>
+                </th>  
+            </tr>  
+          </thead>  
+          <tbody>  
+            <!-- Use the Apex model and controller to fetch server side data -->  
+            <template for:each={cases} for:item="caseObj">  
+              <tr key={caseObj.Id}>  
+                <th scope="row" id={caseObj.CaseNumber}>  
+                  <div class="slds-truncate" title="View case details" >
+                        <a id={caseObj.Id} onclick={handleNavigate} target="_blank" tooltip="View case details">
+                          <div id={caseObj.Id}  onmouseover={mouseOverAnchr} onmouseout={mouseOutAnchr}>{caseObj.CaseNumber}</div>
+                        </a>
+                  </div>  
+                </th>  
+                <th scope="row">  
+                  <div class="slds-truncate" title={caseObj.First_name__c}>{caseObj.First_name__c} {caseObj.Last_name__c}</div>  
+                </th>
+                <th scope="row">
+                  <div class="slds-truncate" title={caseObj.AdditionalInformation__c}>{caseObj.AdditionalInformation__c}</div>  
+                </th>
+                <th scope="row"> 
+                  <div class="slds-truncate" title={caseObj.DHL_Status__c}>{caseObj.DHL_Status__c}</div>  
+                </th>
+                <th scope="row"> 
+                  <div class="slds-truncate" title={caseObj.CreatedDate} >
+                    <lightning-formatted-date-time value={caseObj.CreatedDate} year="2-digit" month="short" day="2-digit" weekday="long"></lightning-formatted-date-time>
+                    </div>  
+                </th>                   
+              </tr>  
+            </template>  
+            <template if:false={totalrecords}>
+              <tr>
+                <th colspan="5" class="customNoRecords">
+                  <span>No records found!</span>
+                </th>
+              </tr>
+            </template>
+          </tbody>  
+        </table>  
+      </template>  
+    </div>  
+    <p class="slds-m-vertical_medium content m_left_20">Total records: <b>{totalrecords} </b> Page <b>{currentpage}</b> of  
+      <b> {totalpages}</b></p>  
+  </lightning-card>  
+</template>

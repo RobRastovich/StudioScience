@@ -1,0 +1,70 @@
+<template>
+    <fieldset style="padding: 0.35em 0.75em 0.625em; border: 2px solid; border-radius: 0.25rem; ">
+        <legend>{DSC_Address}</legend>
+        <lightning-input 
+            name="streetaddress"
+            data-id = "streetaddressId"
+            onchange={handleChangeOfInput}
+            type="text" 
+            label={DSC_Street_Address} 
+            value={newaccount.PersonMailingStreet}
+            maxlength="255"
+            message-when-value-missing={DSC_error_Street_Address_must_not_be_empty}
+            required>
+        </lightning-input>
+        <lightning-input 
+            name="address2"
+            data-id = "address2Id"
+            onchange={handleChangeOfInput}
+            type="text" 
+            label={DSC_Address_2} 
+            value={newaccount.Address2}
+            maxlength="255">
+        </lightning-input>
+        <lightning-input 
+            name="postalcode"
+            data-id = "postalcodeId"
+            onchange={handleChangeOfInput}
+            type="text" 
+            label={DSC_Postal_Code}
+            value={newaccount.PersonMailingPostalCode} 
+            maxlength="20"
+            message-when-value-missing={DSC_error_Postal_Code_must_not_be_empty}
+            required>
+        </lightning-input>
+        <lightning-input 
+            name="city"
+            data-id="cityId"
+            onchange={handleChangeOfInput}
+            type="text" 
+            label={DSC_City} 
+            value={newaccount.PersonMailingCity}
+            maxlength="80"
+            message-when-value-missing={DSC_error_City_must_not_be_empty}
+            required>
+        </lightning-input>
+        <lightning-input 
+            name="state"
+            data-id="stateId"
+            onchange={handleChangeOfInput}
+            type="text" 
+            label={DSC_State} 
+            value={newaccount.PersonMailingState}
+            message-when-value-missing={DSC_error_State_must_not_be_empty}
+            maxlength="80"
+            required>
+        </lightning-input>
+        <lightning-combobox
+            name="select"
+            data-id="countryId"
+            onchange={handleChangeOfInput}
+            label={DSC_Country}
+            value={newaccount.PersonMailingCountry}
+            dropdown-alignment="bottom-left"
+            placeholder={DSC_Select_a_Country}
+            options={countories}
+            message-when-value-missing={DSC_error_Please_select_a_country}
+            required="true">
+        </lightning-combobox>
+    </fieldset>
+</template>

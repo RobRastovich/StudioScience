@@ -1,0 +1,86 @@
+<template>
+    <div class="slds-grid slds-gutters slds-wrap stateborder">
+        <div class="slds-col slds-size_1-of-2">
+            <span>
+                <lightning-combobox name="state" label={orderTableLabelsList.stateProvinceLabel} value={state} options={stateFilterValues} placeholder="" onchange={handleStateChange} message-when-value-missing={orderTableLabelsList.fieldErrorMessage} required>
+                </lightning-combobox>
+            </span>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+            <span>
+                <lightning-combobox name="region" label={orderTableLabelsList.regionLabel} value={region} options={regionOptions} placeholder="" onchange={handleChange} message-when-value-missing={orderTableLabelsList.fieldErrorMessage} required>
+                </lightning-combobox>
+            </span>
+        </div>
+    </div>
+    <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-max-medium-table--stacked-horizontal innovationOrderTable"
+           role="grid">
+        <thead>
+            <tr>
+                <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                    {orderTableLabelsList.shipPointLabel}
+                </th>
+                <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                    {orderTableLabelsList.addressLabel}
+                </th>
+                <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                    {orderTableLabelsList.attentionToLabel}
+                </th>
+                <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                    {orderTableLabelsList.phoneLabel}&nbsp;&nbsp;&nbsp;
+                    <span class="customTop-3">
+                        <lightning-helptext content={orderTableLabelsList.phoneHelptext}></lightning-helptext>
+                    </span>
+                </th>
+                <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                    {orderTableLabelsList.recipientEmailLabel}
+                </th>
+                <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                    {orderTableLabelsList.quantityLabel}
+                </th>
+                <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                </th>
+            </tr>
+        </thead>
+        <tbody class="orderDetails">
+            <template iterator:it={projectList} for:index="index">
+                <tr class="slds-hint-parent" key={it.value.Id}>
+                    <td role="gridcell" class="slds-cell-wrap" data-label={orderTableLabelsList.shipPointLabel}>
+                        <lightning-combobox accesskey={it.index} name='legalShipPoint' value={it.value.legalShipPoint} onchange={handleChange} placeholder="" options={shipPointList} variant="label-hidden" message-when-value-missing={orderTableLabelsList.fieldErrorMessage} required>
+                        </lightning-combobox>
+                    </td>
+                    <td role="gridcell" class="slds-cell-wrap" data-label={orderTableLabelsList.addressLabel}>
+                        <lightning-textarea class="marginTop-5" accesskey={it.index} name='address' value={it.value.address} placeholder="" variant="label-hidden" message-when-value-missing={orderTableLabelsList.fieldErrorMessage} disabled>
+                        </lightning-textarea>
+                    </td>
+                    <td role="gridcell" class="slds-cell-wrap" data-label={orderTableLabelsList.attentionToLabel}>
+                        <lightning-input accesskey={it.index} name='attentionTo' type="text" value={it.value.attentionTo} placeholder="" max-length="50" onchange={handleChange} variant="label-hidden" message-when-value-missing={orderTableLabelsList.fieldErrorMessage} required>
+                        </lightning-input> 
+                    </td>
+                    <td role="gridcell" class="customWidth-11" data-label={orderTableLabelsList.phoneLabel}>
+                        <lightning-input accesskey={it.index} name='phone' type="phone" value={it.value.phone} pattern="\D*([0-9]\d{2})(\D*)([0-9]\d{2})(\D*)(\d{4})\D*" onchange={handleChange} max-length="10" variant="label-hidden" message-when-value-missing={orderTableLabelsList.fieldErrorMessage} message-when-pattern-mismatch={orderTableLabelsList.fieldErrorMessage} required>
+                        </lightning-input>
+                    </td>
+                    <td role="gridcell" class="slds-cell-wrap" data-label={orderTableLabelsList.recipientEmailLabel}>
+                        <lightning-input accesskey={it.index} name='recipientEmail' type="email" value={it.value.recipientEmail} placeholder="" max-length="65" onchange={handleChange} pattern="^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$" variant="label-hidden" message-when-value-missing={orderTableLabelsList.fieldErrorMessage} message-when-type-mismatch={orderTableLabelsList.fieldErrorMessage} message-when-pattern-mismatch={orderTableLabelsList.fieldErrorMessage} required>
+                        </lightning-input>
+                    </td>
+                    <td role="gridcell" class="customWidth-9" data-label={orderTableLabelsList.quantityLabel}>
+                        <lightning-input accesskey={it.index} name='quantity' type="text" value={it.value.quantity} placeholder="" pattern="[0-9]{0,6}" max-length="6" onchange={handleChange} variant="label-hidden" message-when-pattern-mismatch={orderTableLabelsList.fieldErrorMessage} message-when-value-missing={orderTableLabelsList.fieldErrorMessage} required>
+                        </lightning-input>
+                    </td>
+                    <td role="gridcell" data-label="Action">
+                        <a onclick={addRow} data-record={index}>
+                            <lightning-icon accesskey={it.index} icon-name="action:new" size="x-small" if:true={it.last} alternative-text={orderTableLabelsList.addLabel}></lightning-icon>
+                            <span class="slds-assistive-text">{orderTableLabelsList.addLabel}</span>
+                        </a> &nbsp;
+                        <a onclick={removeRow} data-record={index}>
+                            <lightning-icon accesskey={it.index} icon-name="action:delete" size="x-small" if:true={isDelvisible} alternative-text={orderTableLabelsList.deleteLabel}></lightning-icon>
+                            <span class="slds-assistive-text">{orderTableLabelsList.deleteLabel}</span>
+                        </a>
+                    </td>
+                </tr>
+            </template>
+        </tbody>
+    </table>
+</template>

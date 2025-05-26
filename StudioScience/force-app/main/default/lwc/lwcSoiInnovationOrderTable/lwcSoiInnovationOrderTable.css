@@ -1,0 +1,27 @@
+.stateborder {
+    border: 1px solid #dddddd;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.innovationOrderTable {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.marginTop-5{
+    margin-top: 5px !important;
+}
+
+.customWidth-9 {
+    width: 9%;
+}
+
+.customWidth-11 {
+    width: 11%;
+}
+
+.customTop-3 {
+    position: relative;
+    top: -3px;
+}

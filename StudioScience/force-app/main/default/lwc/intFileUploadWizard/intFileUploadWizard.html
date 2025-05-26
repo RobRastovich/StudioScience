@@ -1,0 +1,131 @@
+<template>
+    <lightning-modal-body>
+        <div class="slds-is-relative" style="height:50vh">
+            <div class="slds-is-relative" style="height:50vh" lwc:ref="spinner">
+                <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+            </div>
+            <lightning-card>
+                <div lwc:ref="body" class="slds-hide">
+                    <div class="slds-p-bottom_small">
+                        Do you have any files or links that could provide us with more context about your request? 
+                        By attaching relevant documents, images, or URLs, you can help us understand your needs better and respond more effectively.
+                    </div>
+                    <div class="slds-button-group" style="width: 100%" role="group">
+                        <button name="AddLink" class="slds-button slds-button_stretch" onclick={handleButtonClick}>Link</button>
+                        <button name="AddFiles" class="slds-button slds-button_stretch" onclick={handleButtonClick}>Files</button>
+                    </div>
+                    <lightning-record-edit-form object-api-name="INT_DesignFiles__c" onload={handleLoad} onsuccess={handleSuccess}>
+                        <lightning-messages></lightning-messages>
+                        <lightning-layout multiple-rows>
+                            <lightning-layout-item size="12">
+                                <lightning-input-field 
+                                    field-name="INT_Category__c" 
+                                    variant="label-stacked"
+                                    value={selectedCategory}
+                                    onchange={handleChange}>
+                                </lightning-input-field>
+                                <template if:true={showLinkDetails}>
+                                    <div class="slds-form-element slds-p-horizontal_xx-small">
+                                        <label class="slds-form-element__label" for="urlField">URL</label>
+                                        <div class="slds-form-element__control slds-grid">
+                                            <div class="slds-col slds-size_3-of-4 slds-m-right_xx-small">
+                                                <lightning-input-field
+                                                    field-name="INT_Hyperlink__c"
+                                                    variant="label-hidden"
+                                                    value={selectedURL}
+                                                    onchange={handleChange}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-4">
+                                                <button class="slds-button slds-button_brand slds-button_stretch" onclick={handleAddLinks} disabled={isAddLinkDisabled}>Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-grid slds-wrap slds-p-around_medium">
+                                        <template for:each={uploadedLinksInfo} for:item="link">
+                                            <div key={link.id} class="slds-col slds-size_1-of-2 slds-m-bottom_small">
+                                                <div class="slds-grid slds-wrap">
+                                                    <div class="slds-p-top_xx-small">
+                                                        <lightning-icon icon-name="standard:link" size="medium" alternative-text="Link icon" class="slds-m-right_small"></lightning-icon>
+                                                    </div>
+                                                    <div class="slds-col slds-size_3-of-5">
+                                                        <div class="slds-text-title_bold slds-truncate">
+                                                            <a href={link.INT_Hyperlink__c} target="_blank">{link.fields.INT_Hyperlink__c}</a>
+                                                        </div>
+                                                        <div class="slds-text-body_small">{link.fields.INT_Category__c}</div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-5 slds-p-top_x-small">
+                                                        <lightning-button-icon icon-name="utility:clear" size="medium" variant="bare" alternative-text="Delete" onclick={handleDeleteLink} data-id={link.id}></lightning-button-icon>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </lightning-layout-item>
+                            <template if:true={showFileDetails}>
+                                <lightning-file-upload
+                                    label="Select the Files(s) to Attach:"
+                                    record-id={recordId}
+                                    onuploadfinished={handleUploadFinished}
+                                    disabled={isFileUploadDisabled}
+                                    multiple>
+                                </lightning-file-upload>
+                                <lightning-layout-item size="12">
+                                    <div class="slds-p-bottom_small">
+                                        The maximum file size per upload is 1 GB and a maximum of 10 files can be uploaded simultaneously.
+                                    </div>
+                                    <div class="slds-grid slds-wrap slds-p-around_medium">
+                                        <template for:each={uploadedFilesInfo} for:item="file">
+                                            <div key={file.documentId} class="slds-col slds-size_1-of-2 slds-m-bottom_small">
+                                                <div class="slds-grid slds-wrap">
+                                                    <div class="slds-p-top_xx-small">
+                                                        <lightning-icon icon-name={file.icon} size="medium" alternative-text="File icon" class="slds-m-right_small"></lightning-icon>
+                                                    </div>
+                                                    <div class="slds-col slds-size_3-of-5">
+                                                        <div class="slds-text-title_bold slds-truncate">{file.title}</div>
+                                                        <div class="slds-text-body_small">{file.category}</div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-5 slds-p-top_x-small">
+                                                        <lightning-button-icon icon-name="utility:clear" size="medium" variant="bare" alternative-text="Delete" onclick={handleDeleteFile} data-id={file.documentId}></lightning-button-icon>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </lightning-layout-item>
+                            </template>
+                        </lightning-layout>
+                    </lightning-record-edit-form>
+                </div>
+            </lightning-card>
+        </div>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <template if:true={showSkipButton}>
+            <lightning-button 
+                label="Skip"
+                class="slds-float_left"
+                data-action="Skip" 
+                onclick={handleButtonClick} 
+                variant="neutral">
+            </lightning-button>
+        </template>
+        <template if:true={showCancelButton}>
+        <lightning-button 
+            label="Cancel"
+            class="slds-float_left"
+            data-action="Cancel" 
+            onclick={handleButtonClick} 
+            variant="neutral">
+        </lightning-button>
+        </template>
+        <lightning-button 
+            label="Save"
+            data-action="Save" 
+            onclick={handleButtonClick} 
+            variant="brand" 
+            disabled={isSaveDisabled}>
+        </lightning-button>
+    </lightning-modal-footer>
+</template>

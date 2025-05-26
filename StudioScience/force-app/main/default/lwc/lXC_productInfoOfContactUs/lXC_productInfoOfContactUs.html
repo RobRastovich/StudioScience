@@ -1,0 +1,107 @@
+<template>
+    <fieldset class="fieldsetStyle">
+        <legend>{DSC_Product_Information}</legend>
+        <lightning-combobox
+            name="select"
+            data-id="productId"
+            onchange={handleChangeOfInput}
+            label={DSC_Product}
+            value={newcase.Product_Type__c}
+            placeholder={DSC_Select_a_Product}
+            options={productList}
+            message-when-value-missing={DSC_error_Please_select_a_product}
+            required="true">
+        </lightning-combobox>
+        <lightning-combobox
+            name="select"
+            data-id="sizeId"
+            onchange={handleChangeOfInput}
+            label={DSC_What_size_is_the_bottle}
+            value={newcase.Product_Size__c}
+            placeholder={DSC_Select_a_Size}
+            options={productsizeoption}
+            message-when-value-missing={DSC_error_Please_select_a_bottle_size}
+            required="true">
+        </lightning-combobox>
+        <lightning-combobox
+            name="selectSample"
+            data-id="sampleId"
+            onchange={handleChangeOfInput}
+            label={Do_you_still_have_the_product}
+            value={newcase.Do_you_still_have_the_product__c}
+            placeholder={DSC_Select_an_option}
+            options={doyoustillhaveproduct}
+            message-when-value-missing={DSC_error_Please_select_do_you_still_have_the_product}
+            required="true">
+        </lightning-combobox>
+        <lightning-combobox
+            name="selectIssue"
+            data-id="issueId"
+            onchange={handleChangeOfInput}
+            label={DSC_Issue_Type}
+            value={newcase.Issue__c}
+            placeholder={DSC_Select_an_Issue_Type}
+            message-when-value-missing={DSC_error_Please_select_an_issue_type}
+            options={issueList}
+            required="true">
+        </lightning-combobox>
+        <lightning-input 
+            if:true={ishowLotCode}
+            name="lotcode"
+            data-id="lotcodeId"
+            onchange={handleChangeOfInput}
+            type="text" 
+            label={DSC_Lot_Code}
+            value={newcase.Lot_Code__c} 
+            minlength="6"
+            maxlength="20"
+            message-when-value-missing={DSC_error_Lot_code_must_not_be_empty}
+            required>
+        </lightning-input>
+        <div  if:true={ishowLotCode} class="demo-only demo-only--sizing slds-grid slds-wrap">
+            <div>
+                <a onclick={showModal}>
+                    {DSC_click_LOT_CODE_HELP}
+                </a>
+            </div>
+            <div if:true={ishowModalLotCodeVideo} class="slds-p-left_large">
+                <a onclick={showModalForVideo}>
+                    {DSC_click_LOT_CODE_VIDEO}
+                </a>
+            </div>
+        </div>
+    </fieldset>
+    <div if:true={ishowModal}>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <!-- modal header start -->
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                    <lightning-icon icon-name="utility:close"
+                    alternative-text="close"
+                    variant="inverse"
+                    size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Lot Code Locator</h2>
+            </header>
+            <!-- modal body start --> 
+            <div if:true={showImage} class="slds-modal__content slds-p-around_medium" > 
+                <img src={imgSrc} />
+            </div>
+            <div if:true={showVideo} class="slds-modal__content slds-p-around_medium" > 
+                <video width="100%" height = "100%" controls>
+                    <source src={sampleUrl} type="video/mp4">
+                </video>
+            </div>
+            <!-- modal footer start-->
+            <footer class="slds-modal__footer">
+                
+                <!--<button class="slds-button slds-button_neutral" onclick={hideModalBox}>Cancel</button>-->
+            </footer>
+
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    </div> 
+</template>

@@ -1,0 +1,78 @@
+<template>
+    <div class="slds-path slds-m-bottom_medium">
+        <div class="slds-grid slds-path__track">
+          <div class="slds-grid slds-path__scroller-container">
+            <div class="slds-path__scroller">
+              <div class="slds-path__scroller_inner">
+                <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+                  <li class="slds-path__item slds-is-current" role="presentation">
+                    <a aria-selected="false" class="slds-path__link" id="path-11" role="option" tabindex="-1">
+                      <span class="slds-path__stage">
+                        <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                        </svg>
+                        <span class="slds-assistive-text">Current Stage:</span>
+                      </span>
+                      <span class="slds-path__title">Select Type</span>
+                    </a>
+                  </li>
+                  <li class="slds-path__item slds-is-incomplete" role="presentation">
+                    <a aria-selected="false" class="slds-path__link" id="path-12" role="option" tabindex="-1">
+                      <span class="slds-path__stage">
+                        <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                        </svg>
+                      </span>
+                      <span class="slds-path__title">Customer Information</span>
+                    </a>
+                  </li>
+                  <li class="slds-path__item slds-is-incomplete" role="presentation">
+                    <a aria-selected="true" class="slds-path__link" id="path-13" role="option" tabindex="0">
+                      <span class="slds-path__stage">
+                        <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                        </svg>
+                      </span>
+                      <span class="slds-path__title">Details</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <lightning-card title="Case Creation Form" icon-name="standard:case_transcript"> 
+        <div class="slds-m-around--xx-large">
+            <div class="slds-m-left_large">
+                <c-custom-toast auto-close-time="8000"></c-custom-toast>
+            </div>
+            
+            <div class="container-fluid slds-grid slds-wrap">
+                <div class="slds-size_3-of-12 slds-max-small-size_1-of-1 slds-p-top_large lbl_formtype">
+                    <div><span>Form Type :</span></div>
+                </div>
+                <div class="slds-size_3-of-12 slds-max-small-size_1-of-1">
+                    <lightning-combobox name="type" value={selectedvalue} placeholder="Select Type" options={options} onchange={handleChange} ></lightning-combobox>
+                </div>
+            </div>
+            <div class="container-fluid slds-grid slds-wrap">
+                <div class="slds-size_3-of-12 slds-max-small-size_1-of-1">
+                </div>
+                <template if:false={error}>
+                    <div class="slds-size_3-of-12 slds-max-small-size_1-of-1 slds-align_absolute-left slds-m-top_large">
+                        <lightning-button label="Next" variant="brand" onclick={nextStep}></lightning-button>
+                    </div>
+                </template>
+                <template if:true={error}>
+                    <div class="slds-size_3-of-12 slds-max-small-size_1-of-1 slds-align_absolute-left slds-m-top_large">
+                        <lightning-button label="Next" variant="brand" onclick={showToast}></lightning-button>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </lightning-card>
+    <template if:false={isLoaded}>
+        <div class="spinner_class_div">
+            <lightning-spinner class="spinner_class" alternative-text="Loading" variant="brand">
+            </lightning-spinner>
+        </div>
+    </template>
+</template>

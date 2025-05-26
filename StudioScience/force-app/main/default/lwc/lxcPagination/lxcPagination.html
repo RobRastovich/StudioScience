@@ -1,0 +1,18 @@
+<template>
+    <!--  Pagination Buttons Start -->
+    <div class="slds-align_absolute-center">
+        <lightning-button label="Previous" icon-name="utility:chevronleft" onclick={previousHandler}
+            disabled={ispreviousdisable}>
+        </lightning-button>
+        <span class="slds-badge slds-badge_lightest"
+                    style="margin-right: 10px;margin-left: 10px;">
+                   Displaying {startingrecord} to {endingrecord} of {totalrecordcount} records.
+                 Page {page} of {totalpage}.
+        </span>
+       
+        <lightning-button label="Next" icon-name="utility:chevronright" icon-position="right" onclick={nextHandler}
+            disabled={isnextdisable}>
+        </lightning-button>
+    </div>
+    <!--  Pagination Buttons End -->
+</template>

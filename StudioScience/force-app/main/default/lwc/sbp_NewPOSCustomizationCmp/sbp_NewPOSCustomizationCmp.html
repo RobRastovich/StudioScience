@@ -1,0 +1,246 @@
+<template>
+    <lightning-card>
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-custom-custom6">
+                                <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                    <use xlink:href="/assets/icons/custom-sprite/svg/symbols.svg#custom18"></use>
+                                </svg>
+                                </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <span class="slds-page-header__title slds-truncate" title="POS Customization">POS Customizations ({numberOfPOSItems})</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<template if:false={isMM}>-->
+                    <div class="slds-page-header__col-actions">
+                        <div class="slds-page-header__controls">
+                            <div class="slds-page-header__control">
+                                <lightning-button label="New" slot="actions" onclick={showModalBox}></lightning-button>
+                            </div>
+                        </div>
+                    </div>
+                <!--</template>-->
+            </div>
+        </div>
+        <p class="slds-p-horizontal_small"><br>
+            <template for:each={wiredPOSItem} for:item="pos">
+                <p class="slds-item" key={pos.id}>
+                    <a href={pos.URL} target="_self"><u>{pos.Name}</u></a><br/>
+                    <b>Type</b>: {pos.Type}<br/>
+                    <b>Get Insert Text From</b> : {pos.Get_Insert_Text_From}<br/>
+                    <b>Insert Text</b>: {pos.Insert_Text}<br/><br/>
+                </p>
+           </template>
+        </p>
+        <p slot="footer">
+            <a class="slds-card__footer-action" href={viewAllURL}>View All</a>
+        </p>
+        <template if:true={isShowModal}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close"
+                                            variant="inverse" size="small" ></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New POS Customization: Full Barrel</h2>
+                    </header>
+                
+                    <div class="slds-form slds-modal__content slds-p-around_medium" role="list" id="modal-content-id-1">
+                        <div class="slds-form-element slds-form-element_stacked ">
+                            <div class="slds-float_right">
+                                <span style="color: #ff0000">*</span> = Required Information
+                            </div>
+                        </div><br/>
+                        <div class=" section-header-container slds-section__title slds-theme--shade">
+                            <span class="section-header-title section-header-title slds-p-horizontal--small">Information</span>
+                        </div>
+                        <br>
+                        <fieldset class="slds-form-element slds-form-element_compound slds-form-element_address" style="padding-left: 30px">
+                            <div class="slds-form-element__control">
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" for="form-element-id-I01">POS Customization Name</label>
+                                            <br><br>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-combobox 
+                                            id="form-element-id-I02"
+                                            label="Type"
+                                            value=""
+                                            placeholder="--None--"
+                                            options={typeOptions}
+                                            onchange={handleTypeChange} >
+                                        </lightning-combobox>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-record-picker
+                                            label="UploadedBy"
+                                            object-api-name="User"
+                                            onchange={handleUploadedByChange}
+                                            value = {UploadedBy}>
+                                        </lightning-record-picker>
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-combobox 
+                                            id="form-element-id-I04"
+                                            label="Get Insert Text From"
+                                            value=""
+                                            placeholder="--None--"
+                                            options={insertTextOptions}
+                                            onchange={handleGetInsertTextChange} >
+                                        </lightning-combobox>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-input type="datetime" label="Uploaded Date" value={Date} id="form-element-id-I05-1" onchange={handleDateChange}></lightning-input>
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-record-picker
+                                            label="Barrel"
+                                            object-api-name="Barrel__c"
+                                            onchange={handleBarrelChange}
+                                            value = {Barrel}>
+                                        </lightning-record-picker>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-input type="text" label="Quantity" value={Quantity} id="form-element-id-I07" onchange={handleQuantityChange} ></lightning-input>
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-input type="text" label="Insert Text" value={InsertText} onchange={handleInsertTextChange} id="form-element-id-I08"></lightning-input>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-combobox
+                                            id="form-element-id-I09"
+                                            label="Carrier"
+                                            value={carrierValue}
+                                            placeholder="--None--"
+                                            options={carrierOptions}
+                                            onchange={handleCarrierChange} >
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <label class="slds-form-element__label" for="form-element-id-TI02">Include Signature on Label</label>
+                                        <lightning-helptext content="Include a signature on the back label of the bottle for Makers Mark"></lightning-helptext>
+                                        <lightning-input type="checkbox" value={SignatureCheckbox} onchange={handleSignatureCheckboxChange} id="form-element-id-I10"></lightning-input>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-combobox
+                                            id="form-element-id-I11"
+                                            label="Status"
+                                            value={statusValue}
+                                            placeholder="--None--"
+                                            options={statusOptions}
+                                            onchange={handleStatusChange} >
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <label class="slds-form-element__label" for="form-element-id-TI02">Include Stave Selection on Label</label>
+                                        <lightning-helptext content="Include the number of staves selected on the back label of the bottle for Makers Mark"></lightning-helptext>
+                                        <lightning-input type="checkbox" value={StaveCheckbox} onchange={handleStaveCheckboxChange} id="form-element-id-I12"></lightning-input>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-input type="text" label="IO Code" value={IOCode} onchange={handleIOCodeChange} id="form-element-id-I13"></lightning-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class=" section-header-container slds-section__title slds-theme--shade">
+                            <span class="section-header-title section-header-title slds-p-horizontal--small">Address Information</span>
+                        </div>
+                        <fieldset class="slds-form-element slds-form-element_compound slds-form-element_address" style="padding-left: 30px">
+                            <div class="slds-form-element__control">
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-input type="text" label="Attention" value={Attention} onchange={handleAttentionChange} id="form-element-id-AI01"></lightning-input>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-input type="email" label="Attention Email" value={AttentionEmail} onchange={handleAttentionEmailChange} id="form-element-id-AI02"></lightning-input>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-input type="text" label="Company" value={Company} onchange={handleCompanyChange} id="form-element-id-AI03"></lightning-input>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-input id="form-element-id-AI04" label="Street" onchange={handleStreetChange} value={Street}></lightning-input>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-input type="text" label="City" value={City} onchange={handleCityChange} id="form-element-id-AI05"></lightning-input>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-input type="text" label="State" value={State} onchange={handleStateChange} id="form-element-id-AI06"></lightning-input>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-input type="text" label="Zip" value={Zip} onchange={handleZipChange} id="form-element-id-AI07"></lightning-input>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-input type="text" label="Phone" value={Phone} onchange={handlePhoneChange} id="form-element-id-AI08"></lightning-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class=" section-header-container slds-section__title slds-theme--shade">
+                            <span class="section-header-title section-header-title slds-p-horizontal--small">Tracking Info</span>
+                        </div>
+                        <fieldset class="slds-form-element slds-form-element_compound slds-form-element_address" style="padding-left: 30px">
+                            <div class="slds-form-element__control">
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-input type="text" label="Tracking Number" value={TrackingNumber} onchange={handleTrackingNumberChange} id="form-element-id-TI01"></lightning-input>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <lightning-input type="text" label="Tracking URL" value={TrackingURL} onchange={handleTrackingURLChange} id="form-element-id-TI02"></lightning-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_neutral" onclick={saveDetails}>Save</button>
+                        <button class="slds-button slds-button_neutral" onclick={hideModalBox}>Cancel</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </lightning-card>
+</template>

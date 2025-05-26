@@ -1,0 +1,21 @@
+.lgc-bg {
+    background-color: rgb(242, 242, 242);
+}
+.caseHeading{
+    font-weight: 700;
+    margin-left: 5%;
+}
+.tileSpace{
+    margin-bottom: 2%;
+}
+.formSpace{
+    margin-right: 8%;
+}
+.accordionClass{
+    --sds-c-accordion-heading-font-size:1.3rem;
+    --slds-c-accordion-heading-text-color:#fd0505a1;
+    font-weight: 600;
+}
+.TypeClass{
+    width: 50% !important;
+}

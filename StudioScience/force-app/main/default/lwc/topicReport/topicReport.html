@@ -1,0 +1,288 @@
+<template>
+    <c-custom-toast auto-close-time="8000"></c-custom-toast>
+    <div class="spinner">
+        <template if:true={isLoading}>
+             <lightning-spinner alternative-text="Loading" variant="brand" size="large" class = "slds-spinner_container">
+             </lightning-spinner>
+        </template>
+    </div>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+        <div class="slds-media__body">
+        <h2 class="slds-card__header-title">
+        <span>Tagging Report</span>
+        </h2>
+        </div>
+            <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                <button class="slds-button slds-button_icon slds-button_icon-border-filled filter" aria-haspopup="true" aria-expanded="true" title="Filter" onclick={showFilterMenu}>
+                    <lightning-icon icon-name="utility:filterList" alternative-text="filter" title="filter" size="xx-small" class="slds-button_icon-border-filled filter-icon"></lightning-icon>
+                </button>
+                <template if:true={getFilterMenu}>
+                <div class="slds-dropdown slds-dropdown_right slds-dropdown_small filterMenu" style="height:380px;">
+                  <ul class="slds-dropdown__list" role="menu" aria-label="Show More">
+                    <li class="slds-dropdown__item" role="presentation">
+                      <a href="#" role="menuitem" tabindex="0">
+                        <span class="slds-truncate slds-dropdown__header" title="Filter">Filters</span>
+                      </a>
+                    </li>
+                    <button class="slds-button slds-button_icon back-button" aria-haspopup="true" aria-expanded="true" title="back" onclick={showFilterMenu}>
+                        <lightning-icon icon-name="utility:back" alternative-text="back button" title="Back button" size="xx-small"></lightning-icon>
+                    </button>
+                    <!-- Created Date Popover -->
+                    <template if:true={getShowContainer}>
+                        <section aria-label="Dialog title" aria-describedby="popover-body-id" class="slds-popover slds-nubbin_right pop" role="dialog">
+                            <div id="popover-body-id" class="slds-popover__body">
+                                <header class="slds-popover__header">
+                                    <h2 class="slds-text-heading_small" id="dialog-heading-id-115">Filter By Created Date</h2>
+                                  </header>
+                                <div class="slds-wrap slds-grid">
+                                    <div class="slds-col slds-size_5-of-12 slds-p-horizontal--small slds-m-bottom--medium">           
+                                        <div class="slds-form-element__control ">
+                                            <lightning-input data-id="startdate" type="Date" label="Start Date" value={currentStartDate} max={today} name="startdate" onchange={handleChangeAction} style="width:14rem"></lightning-input>
+                                            <!-- <lightning-input data-id="startdate" type="Date" label="Start Date" value={oldStartDate} name="startdate" onchange={handleChangeAction} style="width:14rem"></lightning-input> -->
+                                        </div>
+                                    </div>
+                                    <div class="slds-col slds-5-of-12 slds-p-horizontal--small slds-m-bottom--medium">           
+                                        <div class="slds-form-element__control">
+                                            <lightning-input data-id="enddate" type="Date" label="End Date" value={currentEndDate} name="enddate" max={today} onchange={handleChangeAction} style="width:14rem"></lightning-input>
+                                            <!-- <lightning-input data-id="enddate" type="Date" label="End Date" value={oldEndDate} name="enddate" onchange={handleChangeAction} style="width:14rem"></lightning-input> -->
+                                        </div>
+                                    </div>
+                                    <!-- <template if:true={dateDiffExceeded}>
+                                        <div class="slds-col slds-5-of-12 slds-p-horizontal--small slds-m-bottom--medium">           
+                                            <div class="slds-form-element__control">
+                                                <p style="color: red;">Date range must be less than or equal to 90 days.</p>
+                                            </div>
+                                        </div>
+                                    </template> -->
+                                    <template if:true={inValidDateRange}>
+                                        <div class="slds-col slds-5-of-12 slds-p-horizontal--small slds-m-bottom--medium">           
+                                            <div class="slds-form-element__control">
+                                                <p style="color: red;">{errorMessage}</p>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <!-- <template if:true={isFutureEndDate}>
+                                        <div class="slds-col slds-5-of-12 slds-p-horizontal--small slds-m-bottom--medium">           
+                                            <div class="slds-form-element__control">
+                                                <p style="color: red;">End Date must be less than or equal to {today}</p>
+                                            </div>
+                                        </div>
+                                    </template> -->
+                                    <!-- <template if:true={isFutureStartDate}>
+                                        <div class="slds-col slds-5-of-12 slds-p-horizontal--small slds-m-bottom--medium">           
+                                            <div class="slds-form-element__control">
+                                                <p style="color: red;">Start Date must be less than or equal to {today}</p>
+                                            </div>
+                                        </div>
+                                    </template> -->
+                                    
+                                </div>  
+                                <br/><br/>
+                                <div class="slds-float_right slds-p-bottom_small">
+                                    <!-- <lightning-button type="brand" label="Cancel" variant="neutral" size="small" onclick={closeAction}></lightning-button>&nbsp;&nbsp;&nbsp;
+                                    <lightning-button type="brand" label="Apply" variant="brand" size="small" onclick={searchAction} disabled={isDisableApply}></lightning-button> -->
+                                    <lightning-button name = "datefilter" type="brand" label="Done" variant="neutral" size="small" onclick={doneMethodForFilter} disabled={isDoneDisable}></lightning-button>
+                                </div>
+                            
+                            <lightning-icon icon-name="utility:close" size="small" alternative-text="Indicates close" class="closeIcon close" onclick={closeAction} style="cursor:pointer;" title="Close"></lightning-icon>
+                            </div>
+                            </section>
+                    </template>
+                    <!-- Record Type Popover -->
+                    <template if:true={showRecordType}>
+                        <section aria-label="Dialog title" aria-describedby="popover-body-id-recordType" class="slds-popover slds-nubbin_right pop" role="dialog">
+                            <div id="popover-body-id-recordType" class="slds-popover__body">
+                                <header class="slds-popover__header">
+                                    <h2 class="slds-text-heading_small" id="dialog-heading-id-116">Filter By Record Type</h2>
+                                  </header>
+                                  <lightning-radio-group name="radioGroup"
+                                  label=""
+                                  options={options}
+                                  value={showRecordTypeValue}
+                                  type="radio"
+                                  onchange={handleChangeRecordType}></lightning-radio-group>
+                                <br/><br/>
+                                <div class="slds-float_right slds-p-bottom_small">
+                                    <!-- <lightning-button type="brand" label="Cancel" variant="neutral" size="small" onclick={closeAction}></lightning-button>&nbsp;&nbsp;&nbsp;
+                                    <lightning-button type="brand" label="Apply" variant="brand" size="small" onclick={searchRecordTypeFilterButton}></lightning-button> -->
+                                    <lightning-button type="brand" name = "recordtypefilter" label="Done" variant="neutral" size="small" onclick={doneMethodForFilter}></lightning-button>
+                                </div>
+                            <lightning-icon icon-name="utility:close" size="small" alternative-text="Indicates close" class="closeIcon close" onclick={closeAction} style="cursor:pointer;" title="Close"></lightning-icon>
+                            </div>
+                            </section>
+                    </template>
+                    <li class="slds-dropdown__item" role="presentation">
+                      <a href="#" role="menuitem" tabindex="-1">
+                        <span class="slds-truncate slds-button_icon-border-filled slds-dropdown_small slds-text-heading_small text" title="Created Date" onclick={handleClickFilter}>Created Date</span>
+                      </a>
+                      <p class="slds-p-left_medium">
+                        StartDate : {showOldStartDate} <br/>
+                        EndDate : {showOldEndDate}
+                      </p>
+                    </li>
+                    <li class="slds-dropdown__item" role="presentation">
+                      <a role="menuitem" href="#" aria-expanded="true" tabindex="-1">
+                        <span class="slds-truncate slds-button_icon-border-filled slds-dropdown_small slds-text-heading_small text" title="Record Type" onclick={handleRecordType}>Record Type</span>
+                      </a>
+                      <p class="slds-p-left_medium">
+                        RecordType : {showRecordTypeValue} <br/>
+                      </p>
+                    </li>
+                  </ul>
+                  <div class = "slds-float_right slds-p-right_small slds-p-top_small">
+                        <lightning-button type="brand" label="Apply" variant="brand" size="small" onclick={searchRecordTypeFilterButton}></lightning-button>
+                  </div>
+                </div>
+            </template>
+              </div>
+        </header>
+        </div>
+        </article>
+        <table class="slds-table slds-table--cell-buffer">
+             <thead style="padding: 1rem;">
+                 <tr class="slds-text-title--caps">
+                    <th data-id="S.No." class="slds-size_1-of-8">
+                        <span class="slds-truncate" title="S.No.">S.No.</span>
+                         <!-- </a> -->
+                    </th>
+                     <th data-id="Topic Name" class="slds-size_2-of-8">
+                         <!-- <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset"> -->
+                             <span class="slds-assistive-text">Sort</span>
+                             <span class="slds-truncate" title="Topic Name">Topic Name 
+                                <lightning-button-menu alternative-text="Show options" icon-size="xx-small" class="slds-p-horizontal_medium">
+                                    <lightning-menu-item value="SortAscending" label="Sort Asc" data-field="TopicName" data-id="asc" onclick={sortTopicName}></lightning-menu-item>
+                                    <lightning-menu-item value="SortDescending" label="Sort Desc" data-field="TopicName" data-id="desc" onclick={sortTopicName}></lightning-menu-item>
+                                </lightning-button-menu>
+                             </span>
+                     </th>
+                     <th data-field="Case-Owner" class="slds-size_1-of-8">
+                        <span class="slds-truncate" title="Case Owner">Created By</span>
+                     </th>
+                     <th data-id="Created Date" class="slds-size_1-of-8">
+                        <span class="slds-truncate" title="Created Date">Created Date</span>
+                         <!-- </a> -->
+                     </th>
+                     <th data-id="Case Number" class="slds-size_1-of-8">
+                        <!-- <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset"> -->
+                            <span class="slds-truncate" title="Case Number">Case Number</span>
+                        <!-- </a> -->
+                    </th>
+                    <th data-id="Record Type" class="slds-size_1-of-8">
+                        <span class="slds-truncate" title="Record Type">Record Type</span>
+                    </th>
+                    <th data-id="Brand" class="slds-size_1-of-8">
+                        <!-- <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset"> -->
+                            <span class="slds-truncate" title="Brand">Brand</span>
+                        <!-- </a> -->
+                    </th>
+                     </tr>
+             </thead>
+             <tbody>
+                 <template iterator:it={recordToShowList}>
+                     <tr class="slds-hint-parent" key={it.value.TopicName}>
+                         <td>
+                            <span class="slds-cell-wrap slds-text-align_left">{it.value.S_No}</span>
+                         </td>
+                         <td class="topic-name-overflow slds-text-align_left slds-truncate_container_75">
+                             <span data-title={it.value.TopicName} class="slds-cell-wrap">{it.value.TopicName}</span>
+                         </td>
+                         <td class="topic-name-overflow slds-text-align_left">
+                             <template iterator:it={it.value.CaseData.CaseOwner}>
+                                 <tr class="slds-hint-parent" key={it.value}>
+                                     <td class="slds-text-align_left slds-p-left_none">
+                                         <span data-title={it.value} class="slds-cell-wrap slds-truncate slds-text-align_left slds-p-left_none">{it.value}</span>
+                                     </td>
+                                 </tr>
+                             </template>
+                         </td>
+                         <td>
+                             <template iterator:it={it.value.CaseData.CreatedDate}>
+                                 <tr class="slds-hint-parent" key={it.value}>
+                                     <td class="slds-text-align_left slds-p-left_none">
+                                         <span class="slds-cell-wrap slds-truncate">{it.value}</span>
+                                     </td>
+                                 </tr>
+                             </template>
+                         </td>
+                         <td>
+                            <template iterator:it={it.value.CaseData.CaseNumber}>
+                                <tr class="slds-hint-parent" key={it.value}>
+                                    <td class="slds-text-align_left slds-p-left_none">
+                                        <span class="slds-cell-wrap slds-truncate">{it.value}</span>
+                                    </td>
+                                </tr>
+                            </template>
+                        </td>
+                        <td>
+                            <template iterator:it={it.value.CaseData.RecordType}>
+                                <tr class="slds-hint-parent" key={it.value}>
+                                    <td class="slds-text-align_left slds-p-left_none">
+                                        <span class="slds-cell-wrap slds-truncate">{it.value}</span>
+                                    </td>
+                                </tr>
+                            </template>
+                        </td>
+                        <td>
+                            <template iterator:it={it.value.CaseData.brandName}>
+                                <tr class="slds-hint-parent" key={it.value}>
+                                    <td class="slds-text-align_left slds-p-left_none">
+                                        <span class="slds-cell-wrap slds-truncate">{it.value}</span>
+                                    </td>
+                                </tr>
+                            </template>
+                        </td>
+                     </tr>
+                 </template>
+             </tbody>
+        </table>
+        <template if:true={noRecordFound}>
+            <br>
+            <br>
+            <h1 class = 'slds-align_absolute-center slds-text-heading_large slds-text-color_error'>No Record Found</h1>
+            </template>
+            <div class="slds-p-around_x-small pagination" if:false={noRecordFound}>
+                <div class="slds-p-around_x-small pagination Grid-Alignment">
+                    <span class="slds-p-right_x-small">
+                  <lightning-button label="First" icon-name="utility:left" icon-position="left" onclick={onFirst}
+                      disabled={isDisabled}></lightning-button>
+              </span>
+              <lightning-button icon-name="utility:chevronleft" icon-position="left" onclick={onPrev} disabled={isDisabled}></lightning-button>
+            
+                    <template if:true={showFirst}>
+                  <span class="slds-p-horizontal_x-small">
+                      <a onclick={processMe} name="1" style = "color: black">1</a>
+                  </span>
+                  <span class="slds-p-horizontal_xxx-small">
+                  </span>
+              </template>
+                <template if:true={isListValue}>
+                    <template for:each={pageList} for:item="item">
+                        <span class="slds-p-horizontal_x-small" key={item.num}>
+                        <a onclick={processMe} name={item.num} class={item.selectedClass}>{item.num}</a>
+                        </span>
+                        <span class="slds-p-horizontal_xxx-small" key={item.num}>
+                        </span>
+                    </template>
+                </template>
+               <span class="slds-p-horizontal_x-small">
+                  <a onclick={processMe} name={totalPages} class={lastSelected}>{totalPages}</a>
+              </span>
+                    <lightning-button icon-name="utility:chevronright" icon-position="right" disabled={isTotal} onclick={onNext}></lightning-button>
+                    <span class="slds-p-left_x-small">
+                  <lightning-button label="Last" icon-name="utility:right" icon-position="right" disabled={isTotal}
+                      onclick={onLast}></lightning-button>
+              </span>
+                </div>
+            </div>
+            <template if:false={noRecordFound}>
+                <div class="slds-box slds-theme--default">
+                    Click on the link Below to Export data as csv/xls.
+                    <p class="slds-m-top--large">
+                        <!-- <a onclick={exportContactData}>Export Contact Data</a> -->
+                        <lightning-button variant="brand" label="Export Contact data" title="Export Contact Data" onclick={exportContactData} disabled={noRecordFound}></lightning-button>
+                    </p>
+                </div>
+            </template>
+ </template>

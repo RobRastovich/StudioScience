@@ -1,0 +1,19 @@
+<template>  
+    <lightning-card>
+        <template if:false={displayCaseDetail}>
+            <template if:true={displayComboCmp}>
+                <div>
+                    <c-dhl-select-type casedata={casedata} selectedvalue={selectedvalue} onnextpage={handleNextPage}></c-dhl-select-type>  
+                </div> 
+            </template>
+            <template if:false={displayComboCmp}>
+                <div class="slds-m-around_medium">  
+                    <c-dhl-customer casedata={casedata} selectedvalue={selectedvalue} onprevpage={handlePrevPage} ondetailpage={handleDetailPage}>  </c-dhl-customer>  
+                </div>  
+            </template>
+        </template>
+        <template if:true={displayCaseDetail}>
+            <c-dhl-case createdcaseid={createdcaseid} ondetailtocreatepage={handleCreatePage}> </c-dhl-case>  
+        </template>
+    </lightning-card>  
+</template>

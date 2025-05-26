@@ -1,0 +1,142 @@
+<template>
+    <div class="slds-p-around_medium lgc-bg">
+        <template if:false={isLoaded}>
+            <div class="spinner_class_div">
+                <lightning-spinner class="spinner_class" alternative-text="Loading" variant="brand">
+                </lightning-spinner>
+            </div>
+        </template>
+        <div class="slds-m-left_large">
+            <c-custom-toast auto-close-time="8000"></c-custom-toast>
+        </div>
+        <div class="slds-path slds-m-bottom_medium">
+            <div class="slds-grid slds-path__track">
+              <div class="slds-grid slds-path__scroller-container">
+                <div class="slds-path__scroller">
+                  <div class="slds-path__scroller_inner">
+                    <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+                      <li class="slds-path__item slds-is-active" role="presentation">
+                        <a aria-selected="false" class="slds-path__link" id="path-11" role="option" tabindex="-1">
+                          <span class="slds-path__stage">
+                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                            </svg>
+                            <span class="slds-assistive-text">Current Stage:</span>
+                          </span>
+                          <span class="slds-path__title">Select Type</span>
+                        </a>
+                      </li>
+                      <li class="slds-path__item slds-is-current" role="presentation">
+                        <a aria-selected="false" class="slds-path__link" id="path-12" role="option" tabindex="-1">
+                          <span class="slds-path__stage">
+                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                            </svg>
+                          </span>
+                          <span class="slds-path__title">Customer Information</span>
+                        </a>
+                      </li>
+                      <li class="slds-path__item slds-is-incomplete" role="presentation">
+                        <a aria-selected="true" class="slds-path__link" id="path-13" role="option" tabindex="0">
+                          <span class="slds-path__stage">
+                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                            </svg>
+                          </span>
+                          <span class="slds-path__title">Details</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <template if:true={isLoaded}>
+            <lightning-card title={pageTitle} icon-name="standard:case_change_status"> 
+                <template if:true={recordId}>
+                    <div class="slds-m-left_large text-align_left">Case Number : {caserecorddata.CaseNumber}</div>
+                </template>
+                <lightning-record-edit-form density = "Comfy" record-id={recordId} object-api-name="Case" onsubmit ={handleSubmit}  mode="edit">
+                    <div class="slds-m-around--xx-large">
+                        <div class="container-fluid slds-grid slds-wrap">
+                            <div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace slds-m-bottom_medium">
+                                <lightning-combobox name="Program_Subscription__c" label="Program Subscription" disabled = {disableField} value={value} class="validate" required placeholder="Select" options={programOptions} onchange={handleValueChange} ></lightning-combobox>
+                            </div>
+                            <div class="slds-size_5-of-12 slds-max-small-size_1-of-1">
+                                <lightning-input label="First Name" maxlength="100" disabled = {disableField} name="First_name__c" class="validate" required type="text" value={caserecorddata.First_name__c} onchange={handleValueChange}></lightning-input>
+                            </div>
+                            <div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace slds-m-bottom_medium">
+                                <lightning-input label="Last Name" maxlength="100" disabled = {disableField} name="Last_name__c" class="validate" required type="text" value={caserecorddata.Last_name__c} onchange={handleValueChange}></lightning-input>
+                            </div>
+                            <div class="slds-size_5-of-12 slds-max-small-size_1-of-1">
+                                <lightning-input label="Email" maxlength="100" disabled = {disableField} name="Email_Address__c" required class="validate" type="email" pattern="[A-Za-z0-9._-]+@[a-z0-9-]+\.[a-z]{2,}$" message-when-pattern-mismatch="Please enter a valid email" value={caserecorddata.Email_Address__c} onchange={handleValueChange}></lightning-input>
+                            </div>
+                            <div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace slds-m-bottom_medium">
+                                <lightning-input label="Street" maxlength="200" disabled = {disableField} name="Consumer_Street__c" class="validate" required type="text" value={caserecorddata.Consumer_Street__c} onchange={handleValueChange}></lightning-input>
+                            </div>
+                            <div class="slds-size_5-of-12 slds-max-small-size_1-of-1">
+                                <lightning-input label="City" maxlength="100" disabled = {disableField} name="Consumer_City__c" class="validate" required type="text" value={caserecorddata.Consumer_City__c} onchange={handleValueChange}></lightning-input>
+                            </div>
+                            <div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace slds-m-bottom_medium">
+                                <lightning-input label="State" maxlength="100" disabled = {disableField} name="Consumer_State__c" class="validate" required type="text" value={caserecorddata.Consumer_State__c} onchange={handleValueChange}></lightning-input>
+                            </div>
+                            <div class="slds-size_5-of-12 slds-max-small-size_1-of-1">
+                                <lightning-input label="Postal Code" maxlength="100" disabled = {disableField} name="Consumer_Postal_Code__c" class="validate" required type="text" value={caserecorddata.Consumer_Postal_Code__c} onchange={handleValueChange}></lightning-input>
+                            </div>
+                            <div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace slds-m-bottom_medium">
+                                <lightning-input label="Country" maxlength="100" disabled = {disableField} name="Consumer_Country__c" class="validate" required type="text" value={caserecorddata.Consumer_Country__c} onchange={handleValueChange}></lightning-input>
+                            </div>
+                            <div class="slds-size_5-of-12 slds-max-small-size_1-of-1">
+                                <lightning-input label="Phone No" maxlength="10" disabled = {disableField} name="Customer_Phone_Number__c" class="validate" required type="tel" value={caserecorddata.Customer_Phone_Number__c} onchange={handleValueChange} pattern={phoneRegex} message-when-pattern-mismatch="Please enter a valid phone number"></lightning-input>
+                            </div>
+                            <div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace slds-m-bottom_medium">
+                                <lightning-input label="UPS Tracking Number" maxlength="100" disabled = {disableField} name="UPS_Tracking_Number__c" class="validate" required type="text" value={caserecorddata.UPS_Tracking_Number__c} onchange={handleValueChange}></lightning-input>
+                            </div>
+                            <div class="slds-size_5-of-12 slds-max-small-size_1-of-1">
+                                <lightning-input label="UPS Reason For Return" maxlength="200" disabled = {disableField} name="UPS_Reason_For_Return__c" class="validate" required type="text" value={caserecorddata.UPS_Reason_For_Return__c} onchange={handleValueChange}></lightning-input>
+                            </div>
+                            <div class="slds-size_5-of-12 slds-max-small-size_1-of-1 formSpace slds-m-bottom_medium">
+                                <lightning-input label="Order Id" maxlength="100" disabled = {disableField} name="OrderID__c" type="text" value={caserecorddata.OrderID__c} onchange={handleValueChange}></lightning-input>
+                            </div>
+                            <div class="slds-size_5-of-12 slds-max-small-size_1-of-1">
+                                <lightning-combobox name="DHL_Status__c" label="Status" disabled = {disableField} value={statusValue} class="validate" required placeholder="Select" options={statusOptions} onchange={handleValueChange} ></lightning-combobox>
+                            </div>
+                        </div>
+                    </div>    
+                    <template if:true={showButtons}>
+                        <div class="slds-align_absolute-center">
+                            <lightning-button label="Back" variant="brand-outline" title="Back" onclick={handleBack} class="slds-m-left_x-small slds-m-bottom_large">
+                            </lightning-button>
+                            <template if:false={error}>
+                                <lightning-button type="submit" variant="brand" label="Save" title="Save" class="slds-m-left_x-small slds-m-bottom_large">
+                                </lightning-button>
+                            </template>
+                            <template if:true={error}>
+                                <lightning-button onclick={showToast} variant="brand" label="Save" title="Save" class="slds-m-left_x-small slds-m-bottom_large">
+                                </lightning-button>
+                            </template>
+                            <template if:true={disableField}>
+                                <lightning-button label="Next" variant="brand-outline" title="Next" onclick={handleRedirect} class="slds-m-left_x-small slds-m-bottom_large">
+                                </lightning-button>
+                            </template>
+                        </div>
+                    </template>
+                    <template if:false={showButtons}>
+                        <div class="slds-align_absolute-center">
+                            <lightning-button label="Back" variant="brand-outline" title="Back" onclick={handleBack} class="slds-m-left_x-small slds-m-bottom_large">
+                            </lightning-button>
+                            <template if:false={updateMode}>
+                                <lightning-button variant="brand" label="Edit" title="Edit" onclick={handleEdit} class="slds-m-left_x-small slds-m-bottom_large">
+                                </lightning-button>
+                            </template>
+                            <template if:true={updateMode}>
+                                <lightning-button variant="brand" type="submit" label="Update" title="Update" class="slds-m-left_x-small slds-m-bottom_large">
+                                </lightning-button>
+                            </template>
+                            <lightning-button label="Next" variant="brand-outline" title="Next" onclick={handleRedirect} class="slds-m-left_x-small slds-m-bottom_large">
+                            </lightning-button>
+                        </div>
+                    </template>
+                </lightning-record-edit-form>
+            </lightning-card>
+        </template>
+    </div>
+</template>

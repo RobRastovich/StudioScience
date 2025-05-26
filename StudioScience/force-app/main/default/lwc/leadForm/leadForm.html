@@ -1,0 +1,119 @@
+<template>
+	<div class="backgroundImg" style={getBackgroundImage}>
+		<div class="brand-logo-div">
+			<img src={brandLogo} alt="Suntory Global Spirits" class="brand-logo">
+		</div>
+		<div class={containerClass}>
+			<template if:true={spinnerStatus}>      
+				<div class="spinner">        
+					<lightning-spinner variant="brand" alternative-text="Loading..."></lightning-spinner>                       
+				</div>
+			</template>  
+			<div class="form_inner" if:true={isFormVisible}>
+				<h3>Get in touch with our curators!</h3>
+				<lightning-record-edit-form
+											object-api-name={objectApiName}
+											onsubmit={handleSubmit}
+											onsuccess={handleSuccess}
+											onerror={handleError}>
+
+					<lightning-input
+								type="text"
+								label="First Name"
+								name="FirstName"
+								data-firstname="FirstName"
+								message-when-value-missing="First Name must not be empty."
+								onchange={handleLeadInputChange}
+								required
+								></lightning-input>
+
+					<lightning-input
+								type="text"
+								label="Last Name"
+								name="LastName"
+								data-lastname="LastName"
+								message-when-value-missing="Last Name must not be empty."
+								onchange={handleLeadInputChange}
+								required
+								></lightning-input>
+
+					<lightning-input
+								type="email"
+								label="Email Address"
+								data-email="Email"
+								name="Email"
+								pattern="[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}"
+								message-when-value-missing="Email Address must not be empty."
+								message-when-pattern-mismatch="Please enter a valid email address"
+								onchange={handleLeadInputChange}
+								required
+								></lightning-input>
+
+					<lightning-input
+								type="tel"
+								label="Telephone"
+								data-telephone={telephoneField}
+								name={telephoneField}
+								pattern="[0-9]*"
+								max-length = "15"
+								message-when-value-missing="Telephone must not be empty."
+								message-when-pattern-mismatch="Please enter a valid telephone number."
+								onchange={handleLeadInputChange}
+								required
+								></lightning-input>
+
+					<label for="brandField" class="slds-form-element__label">Preferred Brands</label>
+					<lightning-input-field field-name={preferredBrandField} variant="label-hidden"></lightning-input-field>
+
+					<label for="descriptionField" class="slds-form-element__label">Additional Information</label>
+					<lightning-input-field field-name={descriptionField} variant="label-hidden"></lightning-input-field>
+
+					<div class="privacyPolicyDiv">
+						<label class="privacyPolicy_label" for={privacyConsentField}>
+							<lightning-formatted-rich-text class="privacypolicy" value={privacyPolicy}></lightning-formatted-rich-text>
+						</label>
+						<lightning-input 
+									type="checkbox" 
+									name={privacyConsentField}
+									data-privacy policy={privacyConsentField}
+									variant="label-hidden"
+									message-when-value-missing="Please agree to the Privacy Policy ."
+									onchange={handleLeadInputChange}
+									required
+									></lightning-input>
+					</div>
+
+					<lightning-input 
+								class="happy_check"
+								type="checkbox" 
+								label={marketingConsentMessage}
+								name={marketingConsentField}
+								data-marketing consent={marketingConsentField}
+								onchange={handleLeadInputChange}
+								></lightning-input>
+					<div class="slds-m-top_small" style="text-align:center;">
+							<lightning-button
+											variant="brand"
+											type="submit"
+											name="Submit"
+											label="Submit"
+											>
+							</lightning-button> 
+					</div>
+				</lightning-record-edit-form>					
+			</div>
+			<div class="messageDiv slds-p-around_medium" if:false={isFormVisible}>
+				<div if:false={isError}>
+					<lightning-icon class="success_icon" icon-name="utility:success" alternative-text="Success!" variant="inverse"
+					title="Success"></lightning-icon>
+					<p class="thankYou">{thankYouMessage}</p>
+				</div>
+				<div if:true={isError}>
+					<lightning-icon class="error_icon" icon-name="utility:error" alternative-text="Error!" variant="inverse"
+					title="Error"></lightning-icon>
+					<lightning-formatted-rich-text class="error" value={errorMessage}></lightning-formatted-rich-text>
+				</div>
+			</div>
+		</div>
+	</div>	
+</template>
